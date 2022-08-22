@@ -1,3 +1,14 @@
+[tool.isort]
+profile = "black"
+skip = ["docs", "migrations"]
+
+[tool.black]
+exclude = '''
+/(
+  | migrations
+)/
+'''
+
 [tool.poetry]
 name = "educa"
 version = "0.1.0"
