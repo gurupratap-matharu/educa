@@ -11,9 +11,19 @@ urlpatterns = [
     path("<int:pk>/update/", views.CourseUpdateView.as_view(), name="course_update"),
     path("<int:pk>/delete/", views.CourseDeleteView.as_view(), name="course_delete"),
     path(
-        "<int:pk>/module/",
+        "<int:pk>/modules/",
         views.CourseModuleUpdateView.as_view(),
         name="course_module_update",
+    ),
+    path(
+        "module/<int:module_id>/content/<str:model_name>/create/",
+        views.ContentCreateUpdateView.as_view(),
+        name="module_content_create",
+    ),
+    path(
+        "module/<int:module_id>/content/<str:model_name>/<int:id>/update/",
+        views.ContentCreateUpdateView.as_view(),
+        name="module_content_update",
     ),
     # public facing views
     path("<int:pk>/", views.CourseDetailView.as_view(), name="course_detail"),
