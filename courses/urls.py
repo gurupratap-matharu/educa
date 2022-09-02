@@ -5,16 +5,18 @@ from . import views
 app_name = "courses"
 
 urlpatterns = [
-    # instructor facing CRUD views
+    # Course CRUD views (instructor facing)
     path("mine/", views.ManageCourseListView.as_view(), name="manage_course_list"),
     path("create/", views.CourseCreateView.as_view(), name="course_create"),
     path("<int:pk>/update/", views.CourseUpdateView.as_view(), name="course_update"),
     path("<int:pk>/delete/", views.CourseDeleteView.as_view(), name="course_delete"),
+    # Module CRUD views (instructor facing)
     path(
         "<int:pk>/modules/",
-        views.CourseModuleUpdateView.as_view(),
+        views.ModuleCreateUpdateView.as_view(),
         name="course_module_update",
     ),
+    # Content CRUD
     path(
         "module/<int:module_id>/content/<str:model_name>/create/",
         views.ContentCreateUpdateView.as_view(),
@@ -25,7 +27,12 @@ urlpatterns = [
         views.ContentCreateUpdateView.as_view(),
         name="module_content_update",
     ),
-    # public facing views
+    path(
+        "content/<int:id>/delete/",
+        views.ContentDeleteView.as_view(),
+        name="module_content_delete",
+    ),
+    # Public facing views
     path("<int:pk>/", views.CourseDetailView.as_view(), name="course_detail"),
     path("", views.CourseListView.as_view(), name="course_list"),
 ]
