@@ -30,7 +30,7 @@ def user_directory_path(instance, filename):
     File will be uploaded to `MEDIA_ROOT/user_<id>/<filename>`
     """
 
-    return "user_{0}/{1}".format(instance.user.id, filename)
+    return "user_{0}/{1}".format(instance.owner.id, filename)
 
 
 class Subject(models.Model):
