@@ -16,6 +16,11 @@ urlpatterns = [
         views.ModuleCreateUpdateView.as_view(),
         name="course_module_update",
     ),
+    path(
+        "module/<int:module_id>/",
+        views.ModuleContentListView.as_view(),
+        name="module_content_list",
+    ),
     # Content CRUD
     path(
         "module/<int:module_id>/content/<str:model_name>/create/",

@@ -124,12 +124,14 @@ class ModuleContentListView(TemplateResponseMixin, View):
     """
     View to display all modules for a course and list the contents of a specific
     module.
+    So this is a Read/List View for both Module and Content models!
     """
 
     template_name: str = "courses/content_list.html"
 
     def get(self, request, module_id):
-        pass
+        module = get_object_or_404(Module, id=module_id, course__owner=request.user)
+        return self.render_to_response({"module": module})
 
 
 # Content CRUD views
