@@ -25,12 +25,15 @@
         {% block content %}
         {% endblock %}
     </div>
-
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    {% comment "" %}
-    We have not added the dom ready block using ajax. As when we try to save it it
-    the autoformat breaks it into multiple lines :(
-    {% endcomment %}
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js" integrity="sha256-lSjKY0/srUM9BE3dPm+c4fBo1dky2v27Gdjm2uoZaL0=" crossorigin="anonymous"></script>
+    <script>
+        $(document).ready(function() {
+          {% block domready %}
+          console.log('Base.html: Veer dom is ready!')
+          {% endblock %}
+        });
+      </script>
 </body>
 
 </html>
