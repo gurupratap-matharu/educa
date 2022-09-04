@@ -1,14 +1,20 @@
+import json
 import logging
+import pdb
 
 from django.apps import apps
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.forms.models import modelform_factory
-from django.shortcuts import get_object_or_404, redirect
-from django.urls import is_valid_path, reverse_lazy
+from django.http import JsonResponse
+from django.shortcuts import HttpResponse, get_object_or_404, redirect
+from django.urls import reverse_lazy
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_exempt
 from django.views.generic.base import TemplateResponseMixin, View
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.views.generic.list import ListView
+from requests import JSONDecodeError
 
 from .forms import ModuleFormSet
 from .models import Content, Course, Module
@@ -227,3 +233,32 @@ class ContentDeleteView(View):
         content.delete()
 
         return redirect("courses:module_content_list", module.id)
+
+
+# Ajax views to order Module and Content
+@method_decorator(csrf_exempt, name="dispatch")
+class ModuleOrderView(View):
+    """
+    Reorders modules of a course.
+    """
+
+    def post(self, request):
+        request_json = json.loads(request.body)
+        for id, order in request_json.items():
+            Module.objects.filter(id=id, course__owner=request.user).update(order=order)
+        return JsonResponse({"saved": "OK"})
+
+
+@method_decorator(csrf_exempt, name="dispatch")
+class ContentOrderView(View):
+    """
+    Reorders contents of a module.
+    """
+
+    def post(self, request):
+        request_json = json.loads(request.body)
+        for id, order in request_json.items():
+            Content.objects.filter(id=id, module__course__owner=request.user).update(
+                order=order
+            )
+        return JsonResponse({"saved": "OK"})

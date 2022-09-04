@@ -37,6 +37,10 @@ urlpatterns = [
         views.ContentDeleteView.as_view(),
         name="module_content_delete",
     ),
+    # Module order
+    path("module/order/", views.ModuleOrderView.as_view(), name="module_order"),
+    # Content order
+    path("content/order/", views.ContentOrderView.as_view(), name="content_order"),
     # Public facing views
     path("<int:pk>/", views.CourseDetailView.as_view(), name="course_detail"),
     path("", views.CourseListView.as_view(), name="course_list"),
