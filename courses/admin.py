@@ -1,6 +1,7 @@
 from django.contrib import admin
+from embed_video.admin import AdminVideoMixin
 
-from .models import Content, Course, Module, Subject
+from .models import Content, Course, File, Image, Module, Subject, Text, Video
 
 
 @admin.register(Subject)
@@ -34,4 +35,11 @@ class ModuleAdmin(admin.ModelAdmin):
     inlines = [ContentInline]
 
 
-# admin.site.register(Content)
+admin.site.register(Text)
+admin.site.register(File)
+admin.site.register(Image)
+
+
+@admin.register(Video)
+class VideoAdmin(AdminVideoMixin, admin.ModelAdmin):
+    pass

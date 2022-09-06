@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     # third party
     "django_extensions",
+    "embed_video",
     # Local
     "courses.apps.CoursesConfig",
     "students.apps.StudentsConfig",
