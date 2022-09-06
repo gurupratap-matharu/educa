@@ -16,6 +16,8 @@ from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.views.generic.list import ListView
 
+from students.forms import CourseEnrollForm
+
 from .forms import ModuleFormSet
 from .models import Content, Course, Module, Subject
 
@@ -76,6 +78,11 @@ class CourseDetailView(DetailView):
     model = Course
     context_object_name = "course"
     template_name: str = "courses/course_detail.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["enroll_form"] = CourseEnrollForm(initial={"course": self.object})
+        return context
 
 
 # Instructor facing course CRUD views
