@@ -21,3 +21,9 @@ GET http://localhost:8000/api/courses/6/ HTTP/1.1
 
 POST http://localhost:8000/api/courses/6/enroll/ HTTP/1.1
 Authorization: Basic student1:testpass123
+
+
+###  Course contents only
+
+GET http://localhost:8000/api/courses/1/contents/ HTTP/1.1
+Authorization: Basic student1:testpass123
