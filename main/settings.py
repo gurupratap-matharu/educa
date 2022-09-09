@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     # third party
     "django_extensions",
     "embed_video",
+    "rest_framework",
     # Local
     "courses.apps.CoursesConfig",
     "students.apps.StudentsConfig",
@@ -177,3 +178,15 @@ CACHES = {
         "LOCATION": "127.0.0.1:11211",
     }
 }
+
+REST_FRAMEWORK = {
+    "DEFAULT_PERMISSION_CLASSES": [
+        "rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly"
+    ]
+}
+
+SHELL_PLUS_IMPORTS = [
+    "from courses.api.serializers import CourseSerializer, SubjectSerializer",
+    "from rest_framework.renderers import JSONRenderer",
+    "from rest_framework.parsers import JSONParser",
+]
