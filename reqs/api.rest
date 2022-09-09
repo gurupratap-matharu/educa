@@ -1,0 +1,23 @@
+### Subject List
+
+GET http://localhost:8000/api/subjects/ HTTP/1.1
+content-type: application/json
+
+###  Subject Detail
+
+GET http://localhost:8000/api/subjects/2/ HTTP/1.1
+content-type: application/json
+
+###  Course list
+
+GET http://localhost:8000/api/courses/ HTTP/1.1
+
+###  Course detail
+
+GET http://localhost:8000/api/courses/6/ HTTP/1.1
+
+
+###  Course enroll
+
+POST http://localhost:8000/api/courses/6/enroll/ HTTP/1.1
+Authorization: Basic student1:testpass123
