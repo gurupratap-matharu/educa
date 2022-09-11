@@ -8,12 +8,21 @@ the base URL patterns of the project.
 
 We can place this root application anywhere but its a convention to place it in
 `routing.py` which is what this module is about.
+
+Below the ProtocolTypeRouter automatically maps HTTP requests to the standard Django
+views if no specific http mapping is provided.
+
+The AuthMiddlewareStack class provided by channels supports standard Django authentication
+where the user details are stored in the session.
 """
 
-from channels.routing import ProtocolTypeRouter
+from channels.auth import AuthMiddlewareStack
+from channels.routing import ProtocolTypeRouter, URLRouter
+
+import chat.routing
 
 application = ProtocolTypeRouter(
     {
-        # empty for now
+        "websocket": AuthMiddlewareStack(URLRouter(chat.routing.websocket_urlpatterns)),
     }
 )
