@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     # third party
+    "channels",
     "django_extensions",
     "embed_video",
     "rest_framework",
@@ -85,6 +86,9 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = "main.wsgi.application"
+
+# Channels
+ASGI_APPLICATION = "main.routing.application"
 
 
 # Database
