@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     # Local
     "courses.apps.CoursesConfig",
     "students.apps.StudentsConfig",
+    "chat.apps.ChatConfig",
 ]
 
 MIDDLEWARE = [
