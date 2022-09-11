@@ -13,4 +13,54 @@
 
 {% endblock content %}
 
-{% block domready %}{% endblock domready %}
+{% block domready %}
+
+{% comment %}Creating a new websocket{% endcomment %}
+var url = 'ws://' + window.location.host + '/ws/chat/room/' + '{{ course.id }}/';
+var chatSocket = new WebSocket(url);
+
+
+{% comment %}Logic to execute when a new message is received{% endcomment %}
+chatSocket.onmessage = function(e) {
+var data = JSON.parse(e.data);
+var message = data.message;
+
+var $chat = $('#chat');
+$chat.append('<div class="message">' + message + '</div>');
+$chat.scrollTop($chat[0].scrollHeight);
+}
+
+{% comment %}Closing a socket connection{% endcomment %}
+chatSocket.onclose = function(e) {
+console.error("Chat socket closed unexpectedly");
+}
+
+{% comment %}Send message to the socket as well{% endcomment %}
+var $input = $('#chat-message-input');
+var $submit = $('#chat-message-submit');
+
+$submit.click(function() {
+var message = $input.val();
+
+if (message) {
+// Send message in JSON format
+chatSocket.send(JSON.stringify({'message': message}));
+
+// Clear input
+$input.val('');
+
+// Return focus
+$input.focus();
+}
+});
+
+// Focus on input as soon as the page loads so the user can start typing right away!
+$input.focus();
+
+// Send chat if the Enter key is pressed
+$input.keyup(function(e) {
+if (e.which == 13) {
+$submit.click();
+}
+});
+{% endblock domready %}
