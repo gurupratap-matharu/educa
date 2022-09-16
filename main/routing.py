@@ -6,7 +6,7 @@ We can define the root application by adding the ASGI_APPLICATION
 setting to our project which is similar to the ROOT_URLCONF settings that points to
 the base URL patterns of the project.
 
-We can place this root application anywhere but its a convention to place it in
+We can place this root application anywhere but it's a convention to place it in
 `routing.py` which is what this module is about.
 
 Below the ProtocolTypeRouter automatically maps HTTP requests to the standard Django
@@ -19,10 +19,10 @@ where the user details are stored in the session.
 from channels.auth import AuthMiddlewareStack
 from channels.routing import ProtocolTypeRouter, URLRouter
 
-import chat.routing
+from chat.routing import websocket_urlpatterns
 
 application = ProtocolTypeRouter(
     {
-        "websocket": AuthMiddlewareStack(URLRouter(chat.routing.websocket_urlpatterns)),
+        "websocket": AuthMiddlewareStack(URLRouter(websocket_urlpatterns)),
     }
 )
