@@ -43,10 +43,10 @@ $submit.click(function() {
 var message = $input.val();
 
 if (message) {
-// Send message in JSON format
+{% comment %}Send message in JSON format{% endcomment %}
 chatSocket.send(JSON.stringify({'message': message}));
 
-// Clear input
+{% comment %}Clear input{% endcomment %}
 $input.val('');
 
 // Return focus
@@ -54,10 +54,12 @@ $input.focus();
 }
 });
 
-// Focus on input as soon as the page loads so the user can start typing right away!
+{% comment %}
+Focus on input as soon as the page loads so the user can start typing right away!
+{% endcomment %}
 $input.focus();
 
-// Send chat if the Enter key is pressed
+{% comment %}Send chat if the Enter key is pressed{% endcomment %}
 $input.keyup(function(e) {
 if (e.which == 13) {
 $submit.click();
