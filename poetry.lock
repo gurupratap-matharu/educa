@@ -147,6 +147,7 @@ mypy-extensions = ">=0.4.3"
 pathspec = ">=0.9.0"
 platformdirs = ">=2"
 tomli = {version = ">=1.1.0", markers = "python_full_version < \"3.11.0a7\""}
+typing-extensions = {version = ">=3.10.0.0", markers = "python_version < \"3.10\""}
 
 [package.extras]
 colorama = ["colorama (>=0.4.3)"]
@@ -1043,8 +1044,8 @@ testing = ["coverage (>=5.0.3)", "zope.event", "zope.testing"]
 
 [metadata]
 lock-version = "1.1"
-python-versions = "^3.10"
-content-hash = "07cec7445a497b13525375875bf4bcb6de60d31ee0643a51b184f6f173df4343"
+python-versions = "^3.9"
+content-hash = "7cc7ae464888516fbb42cb640da68c8cc7471d8513e036d986202a9247e18467"
 
 [metadata.files]
 aioredis = [

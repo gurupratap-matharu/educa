@@ -16,7 +16,7 @@ description = "An online e-learning platform"
 authors = ["Gurupratap Matharu <gurupratap.matharu@gmail.com>"]
 
 [tool.poetry.dependencies]
-python = "^3.10"
+python = "^3.9"
 Django = "^4.1"
 Pillow = "^9.2.0"
 black = "^22.6.0"
