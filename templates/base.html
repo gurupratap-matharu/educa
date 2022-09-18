@@ -30,10 +30,10 @@
     <script>
         $(document).ready(function() {
           {% block domready %}
-          console.log('Base.html: Veer dom is ready!')
           {% endblock %}
         });
-      </script>
+    </script>
+    {% block js %}{% endblock js %}
 </body>
 
 </html>
