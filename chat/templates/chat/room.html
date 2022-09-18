@@ -1,8 +1,11 @@
 {% extends "base.html" %}
+{% load static %}
+
 
 {% block title %}Chat room for "{{ course.title }}"{% endblock title %}
 
 {% block content %}
+
 
 <div id="chat"></div>
 
@@ -11,58 +14,10 @@
     <input type="submit" id="chat-message-submit" value="Send">
 </div>
 
+{{ course.id|json_script:"course-id" }}
+
 {% endblock content %}
 
-{% block domready %}
-
-{% comment %}Creating a new websocket{% endcomment %}
-var url = 'ws://' + window.location.host + '/ws/chat/room/' + '{{ course.id }}/';
-var chatSocket = new WebSocket(url);
-
-
-{% comment %}Logic to execute when a new message is received{% endcomment %}
-chatSocket.onmessage = function(e) {
-var data = JSON.parse(e.data);
-var message = data.message;
-
-var $chat = $('#chat');
-$chat.append('<div class="message">' + message + '</div>');
-$chat.scrollTop($chat[0].scrollHeight);
-}
-
-{% comment %}Closing a socket connection{% endcomment %}
-chatSocket.onclose = function(e) {
-console.error("Chat socket closed unexpectedly");
-}
-
-{% comment %}Send message to the socket as well{% endcomment %}
-var $input = $('#chat-message-input');
-var $submit = $('#chat-message-submit');
-
-$submit.click(function() {
-var message = $input.val();
-
-if (message) {
-{% comment %}Send message in JSON format{% endcomment %}
-chatSocket.send(JSON.stringify({'message': message}));
-
-{% comment %}Clear input{% endcomment %}
-$input.val('');
-
-// Return focus
-$input.focus();
-}
-});
-
-{% comment %}
-Focus on input as soon as the page loads so the user can start typing right away!
-{% endcomment %}
-$input.focus();
-
-{% comment %}Send chat if the Enter key is pressed{% endcomment %}
-$input.keyup(function(e) {
-if (e.which == 13) {
-$submit.click();
-}
-});
-{% endblock domready %}
+{% block js %}
+<script type="text/javascript" src="{% static 'chat/js/chat_socket.js' %}"></script>
+{% endblock js %}
