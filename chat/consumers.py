@@ -12,37 +12,33 @@ stack consumers."""
 import json
 
 from asgiref.sync import async_to_sync
-from channels.generic.websocket import WebsocketConsumer
+from channels.generic.websocket import AsyncWebsocketConsumer
 from django.utils import timezone
 
 
-class ChatConsumer(WebsocketConsumer):
-    def connect(self):
+class ChatConsumer(AsyncWebsocketConsumer):
+    async def connect(self):
         self.user = self.scope["user"]
         self.id = self.scope["url_route"]["kwargs"]["course_id"]
         self.room_group_name = "chat_%s" % self.id
 
         # Join room group
-        async_to_sync(self.channel_layer.group_add)(
-            self.room_group_name, self.channel_name
-        )
+        await self.channel_layer.group_add(self.room_group_name, self.channel_name)
 
         # Accept connection
-        self.accept()
+        await self.accept()
 
-    def disconnect(self, code):
+    async def disconnect(self, code):
         # Leave room group
-        async_to_sync(self.channel_layer.group_discard)(
-            self.room_group_name, self.channel_name
-        )
+        await self.channel_layer.group_discard(self.room_group_name, self.channel_name)
 
-    def receive(self, text_data):
+    async def receive(self, text_data):
         data_dict = json.loads(text_data)
         message = data_dict["message"]
         now = timezone.now()
 
         # send message to room group
-        async_to_sync(self.channel_layer.group_send)(
+        await self.channel_layer.group_send(
             self.room_group_name,
             {
                 "type": "chat_message",
@@ -52,7 +48,7 @@ class ChatConsumer(WebsocketConsumer):
             },
         )
 
-    def chat_message(self, event):
+    async def chat_message(self, event):
         """
         Receive message from the room group.
 
@@ -66,4 +62,4 @@ class ChatConsumer(WebsocketConsumer):
         And we basically send the event message received to the WebSocket.
         """
 
-        self.send(text_data=json.dumps(event))
+        await self.send(text_data=json.dumps(event))
