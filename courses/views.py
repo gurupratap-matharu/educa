@@ -24,9 +24,8 @@ from .models import Content, Course, Module, Subject
 
 logger = logging.getLogger(__name__)
 
+
 # Mixins
-
-
 class OwnerMixin:
     def get_queryset(self):
         qs = super().get_queryset()
@@ -150,21 +149,17 @@ class ModuleCreateUpdateView(TemplateResponseMixin, View):
         return ModuleFormSet(instance=self.course, data=data)
 
     def dispatch(self, request, pk):
-        logger.info(self.__class__.__name__, "Veer DISPATCH called")
         self.course = get_object_or_404(Course, id=pk, owner=request.user)
         return super().dispatch(request, pk)
 
     def get(self, request, *args, **kwargs):
-        logger.info(self.__class__.__name__, "Veer GET called")
         formset = self.get_formset()
         return self.render_to_response({"course": self.course, "formset": formset})
 
     def post(self, request, *args, **kwargs):
-        logger.info(self.__class__.__name__, "Veer POST called")
         formset = self.get_formset(data=request.POST)
 
         if formset.is_valid():
-            logger.info(self.__class__.__name__, "Veer formset valid")
             formset.save()
             return redirect("courses:manage_course_list")
 
