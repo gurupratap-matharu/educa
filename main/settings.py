@@ -163,19 +163,30 @@ LOGGING = {
     "disable_existing_loggers": False,
     "formatters": {
         "simple": {"format": "%(levelname)s %(message)s"},
+        "verbose": {
+            "format": "%(levelname)s %(asctime)s %(module)s:%(lineno)d %(message)s"
+        },
+        "superverbose": {
+            "format": "%(levelname)s %(asctime)s %(module)s:%(lineno)d %(process)d %(thread)d %(message)s"
+        },
     },
     "handlers": {
         "console": {
             "level": "DEBUG",
             "class": "logging.StreamHandler",
-            "formatter": "simple",
+            "formatter": "verbose",
         },
     },
+    "root": {
+        "handlers": ["console"],
+        "level": "INFO",
+        "formatter": "verbose",
+    },
     "loggers": {
-        "root": {
+        "django": {
+            "level": os.getenv("DJANGO_LOG_LEVEL", default="INFO"),
             "handlers": ["console"],
-            "level": "INFO",
-            "propagate": True,
+            "propagate": False,
         },
     },
 }
