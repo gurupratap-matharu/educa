@@ -3,7 +3,7 @@
 const courseId = JSON.parse(document.getElementById("course-id").textContent);
 
 // Creating a new websocket from the url
-var url = `ws://${window.location.host}/ws/chat/room/${courseId}/`;
+var url = `wss://${window.location.host}/ws/chat/room/${courseId}/`;
 
 var chatSocket = new WebSocket(url);
 
