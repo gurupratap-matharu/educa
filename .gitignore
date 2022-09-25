@@ -14,8 +14,6 @@ db.sqlite3
 media
 staticfiles/
 
-# shell scripts #
-bin/
 
 # Backup files # 
 *.bak 
