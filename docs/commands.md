@@ -1,3 +1,15 @@
+### Tips
+
+Veer if you change static files like Js/css in the app directories make sure
+
+- to collect static
+- run nginx -s reload
+- try in a private incognito window to see changes
+  If you still can't see you changes check the inspector console of the browser
+  to see if your changes are loaded correctly.
+
+Above all - Be Patient and you will be rewarded
+
 ### Nginx
 
 Check nginx config syntax:
