@@ -167,6 +167,7 @@ MEDIA_ROOT = BASE_DIR / "media"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
+CSRF_TRUSTED_ORIGINS = ["https://*.educaproject.com", "https://*.127.0.0.1"]
 
 LOGGING = {
     "version": 1,
