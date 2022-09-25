@@ -232,3 +232,11 @@ SHELL_PLUS_IMPORTS = [
     "from rest_framework.renderers import JSONRenderer",
     "from rest_framework.parsers import JSONParser",
 ]
+
+
+RUN_SECURELY = int(os.getenv("SECURE", default=0))
+
+if RUN_SECURELY:
+    # TODO currently enabling this flag is not working locally
+    SECURE_SSL_REDIRECT = True
+    CSRF_COOKIE_SECURE = True
