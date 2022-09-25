@@ -1,0 +1,25 @@
+AUTH
+
+For now we use the Django's Authentication system in our platform. Both instructors and
+students will be instances of Django's User model, so they will be able to login and 
+logout using the authentication views of django.contrib.auth
+
+
+CMS
+
+The cms allows instructors to create courses and manage their contents. We need to 
+provide the following functionality:
+
+    - login into the cms
+    - list the courses created by the instructor
+    - Create, edit and delete courses
+    - Add modules to a course and reorder them
+    - Add different types of content to each module and reorder them
+
+API
+
+Our API needs to provide the following functionality:
+    - Retrieve subjects
+    - Retrieve available courses
+    - Retrieve course contents
+    - Enroll on a course
