@@ -1,5 +1,3 @@
-import pdb
-
 import requests
 
 username = "student1"

@@ -1,6 +1,5 @@
 import json
 import logging
-import pdb
 
 from django.apps import apps
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin

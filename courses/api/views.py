@@ -8,11 +8,7 @@ from rest_framework.response import Response
 
 from ..models import Course, Subject
 from .permissions import IsEnrolled
-from .serializers import (
-    CourseSerializer,
-    CourseWithContentsSerializer,
-    SubjectSerializer,
-)
+from .serializers import CourseWithContentsSerializer, SubjectSerializer
 
 logger = logging.getLogger(__name__)
 
