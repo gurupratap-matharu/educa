@@ -18,7 +18,7 @@ jobs:
       - name: run image
         uses: abatilo/actions-poetry@v2.1.4
         with:
-          peotry-version: ${{ matrix.poetry-version }}
+          poetry-version: ${{ matrix.poetry-version }}
       - name: View poetry --help
         run: poetry --help
       - name: install dependencies
@@ -27,6 +27,7 @@ jobs:
         run: poetry run pytest --cov=./ --cov-report=xml
       - name: upload coverage to codecov
         uses: codecov/codecov-action@v2
+
   code-quality:
     strategy:
       fail-fast: false
@@ -43,7 +44,7 @@ jobs:
       - name: run image
         uses: abatilo/actions-poetry@v2.1.4
         with:
-          peotry-version: ${{ matrix.poetry-version }}
+          poetry-version: ${{ matrix.poetry-version }}
       - name: install dependencies
         run: poetry install
       - name: run black
