@@ -16,7 +16,6 @@ def subdomain_course_middleware(get_response):
     def middleware(request):
 
         # Code executed for each request before the view (and later middleware) are called
-
         host_parts = request.get_host().split(".")
 
         logger.info("host_parts: %s" % host_parts)
