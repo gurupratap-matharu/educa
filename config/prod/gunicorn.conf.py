@@ -18,10 +18,10 @@ bind = "unix:/run/gunicorn.sock"
 workers = multiprocessing.cpu_count() * 2 + 1
 
 # Access log - records incoming HTTP requests
-# accesslog = "/var/log/gunicorn_access.log"
+# accesslog = "/var/log/gunicorn/access.log"
 
 # Error log - records Gunicorn server errors
-errorlog = "/var/log/gunicorn_error.log"
+errorlog = "/var/log/gunicorn/error.log"
 
 log_file = "-"
 
