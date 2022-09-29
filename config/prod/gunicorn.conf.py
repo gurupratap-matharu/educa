@@ -21,7 +21,7 @@ workers = multiprocessing.cpu_count() * 2 + 1
 # accesslog = "/var/log/gunicorn/access.log"
 
 # Error log - records Gunicorn server errors
-errorlog = "/var/log/gunicorn/error.log"
+# errorlog = "/var/log/gunicorn/error.log"
 
 log_file = "-"
 
