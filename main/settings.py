@@ -59,6 +59,7 @@ INSTALLED_APPS = [
     "courses.apps.CoursesConfig",
     "students.apps.StudentsConfig",
     "chat.apps.ChatConfig",
+    "users.apps.UsersConfig",
 ]
 
 MIDDLEWARE = [
@@ -71,6 +72,9 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "courses.middleware.subdomain_course_middleware",
 ]
+
+
+AUTH_USER_MODEL = "users.CustomUser"
 
 ROOT_URLCONF = "main.urls"
 

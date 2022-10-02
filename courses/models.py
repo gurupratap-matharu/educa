@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.fields import GenericForeignKey
@@ -48,12 +49,16 @@ class Subject(models.Model):
 
 class Course(models.Model):
     owner = models.ForeignKey(
-        User, related_name="courses_created", on_delete=models.SET(get_sentinel_user)
+        settings.AUTH_USER_MODEL,
+        related_name="courses_created",
+        on_delete=models.SET(get_sentinel_user),  # type: ignore
     )
     subject = models.ForeignKey(
-        Subject, related_name="courses", on_delete=models.SET(get_sentinel_subject)
+        Subject, related_name="courses", on_delete=models.SET(get_sentinel_subject)  # type: ignore
     )
-    students = models.ManyToManyField(User, related_name="courses_joined", blank=True)
+    students = models.ManyToManyField(
+        settings.AUTH_USER_MODEL, related_name="courses_joined", blank=True
+    )
     title = models.CharField(max_length=200)
     slug = models.SlugField(max_length=200, unique=True)
     overview = models.TextField()
@@ -104,7 +109,9 @@ class ItemBase(models.Model):
     """
 
     owner = models.ForeignKey(
-        User, related_name="%(class)s_related", on_delete=models.SET(get_sentinel_user)
+        settings.AUTH_USER_MODEL,
+        related_name="%(class)s_related",
+        on_delete=models.SET(get_sentinel_user),
     )
     title = models.CharField(max_length=250)
     created = models.DateTimeField(auto_now_add=True)
