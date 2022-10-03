@@ -18,7 +18,7 @@ def subdomain_course_middleware(get_response):
         # Code executed for each request before the view (and later middleware) are called
         host_parts = request.get_host().split(".")
 
-        logger.info("host_parts: %s" % host_parts)
+        logger.debug("host_parts: %s" % host_parts)
 
         if len(host_parts) > 2 and host_parts[0] != "www":
             # get course for the given domain
@@ -31,7 +31,7 @@ def subdomain_course_middleware(get_response):
                 request.scheme, ".".join(host_parts[1:]), course_url
             )
 
-            logger.info("constructed url: %s" % url)
+            logger.debug("constructed url: %s" % url)
 
             return redirect(url)
 
