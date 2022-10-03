@@ -27,6 +27,7 @@ urlpatterns = [
     path("students/", include("students.urls"), name="students"),
     path("chat/", include("chat.urls", namespace="chat")),
     path("api/", include("courses.api.urls", namespace="api")),
+    path("", include("pages.urls", namespace="pages")),
 ]
 
 if settings.DEBUG:

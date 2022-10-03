@@ -60,6 +60,7 @@ INSTALLED_APPS = [
     "students.apps.StudentsConfig",
     "chat.apps.ChatConfig",
     "users.apps.UsersConfig",
+    "pages.apps.PagesConfig",
 ]
 
 MIDDLEWARE = [
