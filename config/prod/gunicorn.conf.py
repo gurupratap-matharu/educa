@@ -4,7 +4,6 @@
 
 import multiprocessing
 
-
 # restart workers after so many requests with some variability
 max_requests = 1000
 max_requests_jitter = 50
@@ -18,10 +17,11 @@ bind = "unix:/run/gunicorn.sock"
 workers = multiprocessing.cpu_count() * 2 + 1
 
 # Access log - records incoming HTTP requests
-# accesslog = "/var/log/gunicorn/access.log"
+accesslog = "-"
+access_log_format = "{'remote_ip':'%({X-Real-IP}i)s','request_id':'%({X-Request-Id}i)s','response_code':'%(s)s','request_method':'%(m)s','request_path':'%(U)s','request_querystring':'%(q)s','request_timetaken':'%(D)s','response_length':'%(B)s'}"
 
 # Error log - records Gunicorn server errors
-# errorlog = "/var/log/gunicorn/error.log"
+errorlog = "-"
 
 log_file = "-"
 
