@@ -79,7 +79,6 @@ MIDDLEWARE = [
 
 SITE_ID = 1
 
-EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
 AUTHENTICATION_BACKENDS = (
     "django.contrib.auth.backends.ModelBackend",
@@ -97,6 +96,9 @@ ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_LOGOUT_REDIRECT = reverse_lazy("pages:home")
 ACCOUNT_SESSION_REMEMBER = True
 ACCOUNT_SIGNUP_PASSWORD_ENTER_TWICE = False
+
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+DEFAULT_FROM_EMAIL = "admin@educahunt.xyz"
 
 AUTH_USER_MODEL = "users.CustomUser"
 
