@@ -12,14 +12,14 @@ def post_save_receiver(sender, instance, created, **kwargs):
     """
 
     # Just logging for now to check functionality
-    logger.info(
+    logger.debug(
         "Hey Veer you just saved/updated a CustomUser!\n \
         I am the post_save hook that got triggered"
     )
-    logger.info("sender %s" % sender)
-    logger.info("instance %s" % instance)
-    logger.info("created %s" % created)
-    logger.info("kwargs %s" % kwargs)
+    logger.debug("sender %s" % sender)
+    logger.debug("instance %s" % instance)
+    logger.debug("created %s" % created)
+    logger.debug("kwargs %s" % kwargs)
 
     # Your stuff here
 
