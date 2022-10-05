@@ -88,7 +88,11 @@ AUTHENTICATION_BACKENDS = (
 
 
 LOGIN_REDIRECT_URL = reverse_lazy("students:student_course_list")
+
+# Django allauth
 ACCOUNT_LOGOUT_REDIRECT = reverse_lazy("pages:home")
+ACCOUNT_SESSION_REMEMBER = True
+
 
 AUTH_USER_MODEL = "users.CustomUser"
 
