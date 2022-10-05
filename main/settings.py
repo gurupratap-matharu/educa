@@ -50,7 +50,10 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django.contrib.sites",
     # third party
+    "allauth",
+    "allauth.account",
     "channels",
     "django_extensions",
     "embed_video",
@@ -74,6 +77,18 @@ MIDDLEWARE = [
     "courses.middleware.subdomain_course_middleware",
 ]
 
+SITE_ID = 1
+
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+
+AUTHENTICATION_BACKENDS = (
+    "django.contrib.auth.backends.ModelBackend",
+    "allauth.account.auth_backends.AuthenticationBackend",
+)
+
+
+LOGIN_REDIRECT_URL = reverse_lazy("students:student_course_list")
+ACCOUNT_LOGOUT_REDIRECT = reverse_lazy("pages:home")
 
 AUTH_USER_MODEL = "users.CustomUser"
 
@@ -207,7 +222,6 @@ LOGGING = {
     },
 }
 
-LOGIN_REDIRECT_URL = reverse_lazy("students:student_course_list")
 
 CACHES = {
     "default": {
