@@ -12,8 +12,10 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 import os
 from pathlib import Path
 
+import sentry_sdk
 from django.urls import reverse_lazy
 from dotenv import load_dotenv
+from sentry_sdk.integrations.django import DjangoIntegration
 
 load_dotenv()
 
@@ -100,9 +102,20 @@ ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_LOGOUT_REDIRECT = reverse_lazy("pages:home")
 ACCOUNT_SESSION_REMEMBER = True
 ACCOUNT_SIGNUP_PASSWORD_ENTER_TWICE = False
+ACCOUNT_LOGIN_ATTEMPTS_LIMIT = 5
+ACCOUNT_LOGIN_ATTEMPTS_TIMEOUT = 86400
 
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+
 DEFAULT_FROM_EMAIL = "admin@educahunt.xyz"
+DEFAULT_TO_EMAIL = "hi@educahunt.xyz"
+SERVER_EMAIL = "django@educahunt.xyz"
+RECIPIENT_LIST = ["gurupratap.matharu@gmail.com"]
+
+ADMINS = [
+    ("EducaHunt Support", "support@educahunt.xyz"),
+    ("Veer", "veerplaying@gmail.com"),
+]
 
 AUTH_USER_MODEL = "users.CustomUser"
 
@@ -274,3 +287,18 @@ if RUN_SECURELY:
     # TODO currently enabling this flag is not working locally
     SECURE_SSL_REDIRECT = True
     CSRF_COOKIE_SECURE = True
+
+if not DEBUG:
+    # Sentry
+    sentry_sdk.init(
+        dsn=os.getenv("SENTRY_DSN"),
+        integrations=[DjangoIntegration()],
+        environment="production",
+        # Set traces_sample_rate to 1.0 to capture 100%
+        # of transactions for performance monitoring.
+        # We recommend adjusting this value in production.
+        traces_sample_rate=0.1,
+        # If you wish to associate users to errors (assuming you are using
+        # django.contrib.auth) you may enable sending PII data.
+        send_default_pii=True,
+    )
