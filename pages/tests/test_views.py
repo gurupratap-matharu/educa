@@ -8,7 +8,7 @@ from pages.views import (
     PrivacyPageView,
     TermsPageView,
 )
-
+from pages.forms import ContactForm
 
 class HomePageTests(SimpleTestCase):
     def setUp(self):
@@ -118,3 +118,7 @@ class ContactPageTests(SimpleTestCase):
     def test_contact_page_url_resolves_contactpageview(self):
         view = resolve(reverse("pages:contact"))
         self.assertEqual(view.func.__name__, ContactPageView.as_view().__name__)
+
+    def test_contact_page_renders_contactform(self):
+        form = self.response.context['form']
+        self.assertIsInstance(form, ContactForm)
