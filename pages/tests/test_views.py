@@ -1,7 +1,7 @@
 from django.test import SimpleTestCase
 from django.urls import resolve, reverse
 
-from pages.views import AboutPageView, HomePageView, TermsPageView
+from pages.views import AboutPageView, HomePageView, PrivacyPageView, TermsPageView
 
 
 class HomePageTests(SimpleTestCase):
@@ -68,3 +68,25 @@ class TermsPageTests(SimpleTestCase):
     def test_termspage_url_resolves_termspageview(self):
         view = resolve(reverse("pages:terms"))
         self.assertEqual(view.func.__name__, TermsPageView.as_view().__name__)
+
+
+class PrivacyPageTests(SimpleTestCase):
+    def setUp(self):
+        url = reverse("pages:privacy")
+        self.response = self.client.get(url)
+
+    def test_privacy_page_status_code(self):
+        self.assertEqual(self.response.status_code, 200)
+
+    def test_privacy_page_renders_correct_template(self):
+        self.assertTemplateUsed(self.response, "pages/privacy.html")
+
+    def test_privacy_page_contains_correct_html(self):
+        self.assertContains(self.response, "Privacy")
+
+    def test_privacy_page_does_not_contain_incorrect_html(self):
+        self.assertNotContains(self.response, "Hi I should not be on this page!")
+
+    def test_privacy_page_url_resolves_privacypageview(self):
+        view = resolve(reverse("pages:privacy"))
+        self.assertEqual(view.func.__name__, PrivacyPageView.as_view().__name__)
