@@ -46,6 +46,7 @@ safety = "^2.1.1"
 
 [tool.poetry.group.dev.dependencies]
 ipython = "^8.5.0"
+isort = "^5.10.1"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
