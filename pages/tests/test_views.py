@@ -1,6 +1,7 @@
 from http import HTTPStatus
 
-from django.test import SimpleTestCase
+from django.core import mail
+from django.test import SimpleTestCase, tag
 from django.urls import resolve, reverse
 
 from pages.forms import ContactForm
@@ -13,6 +14,7 @@ from pages.views import (
 )
 
 
+@tag("pages", "fast")
 class HomePageTests(SimpleTestCase):
     def setUp(self):
         self.url = reverse("pages:home")
@@ -36,6 +38,7 @@ class HomePageTests(SimpleTestCase):
         self.assertEqual(view.func.__name__, HomePageView.as_view().__name__)
 
 
+@tag("pages", "fast")
 class AboutPageTests(SimpleTestCase):
     def setUp(self):
         self.url = reverse("pages:about")
@@ -59,6 +62,7 @@ class AboutPageTests(SimpleTestCase):
         self.assertEqual(view.func.__name__, AboutPageView.as_view().__name__)
 
 
+@tag("pages", "fast")
 class TermsPageTests(SimpleTestCase):
     def setUp(self):
         self.url = reverse("pages:terms")
@@ -82,6 +86,7 @@ class TermsPageTests(SimpleTestCase):
         self.assertEqual(view.func.__name__, TermsPageView.as_view().__name__)
 
 
+@tag("pages", "fast")
 class PrivacyPageTests(SimpleTestCase):
     def setUp(self):
         self.url = reverse("pages:privacy")
@@ -105,6 +110,7 @@ class PrivacyPageTests(SimpleTestCase):
         self.assertEqual(view.func.__name__, PrivacyPageView.as_view().__name__)
 
 
+@tag("pages", "fast")
 class ContactPageTests(SimpleTestCase):
     def setUp(self):
         self.url = reverse("pages:contact")
@@ -130,7 +136,8 @@ class ContactPageTests(SimpleTestCase):
         form = self.response.context["form"]
         self.assertIsInstance(form, ContactForm)
 
-    def test_contact_page_post_success_for_valid_data(self):
+    @tag("email")
+    def test_contact_page_sends_email_for_valid_data(self):
         response = self.client.post(
             self.url,
             data={
@@ -142,6 +149,13 @@ class ContactPageTests(SimpleTestCase):
         )
 
         self.assertEqual(response.status_code, HTTPStatus.FOUND)
+
+        # Test that an email has been sent.
+        self.assertEqual(len(mail.outbox), 1)
+        # Verify that the subject of the first message is correct.
+        self.assertEqual(mail.outbox[0].subject, "How have you been?")
+
+        # Check page redirected to home after success
         self.assertEqual(response["Location"], reverse("pages:home"))
 
     def test_contact_page_post_error_for_invalid_data(self):

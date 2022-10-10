@@ -1,3 +1,4 @@
+from django.core import mail
 from django.test import SimpleTestCase
 
 from pages.forms import ContactForm
@@ -13,9 +14,17 @@ class ContactFormTests(SimpleTestCase):
             "message": "Hey I have been thinking about you a lot! Would you like to hang around during the weekend?",
         }
 
-    def test_contact_form_is_valid_for_valid_data(self):
+    def test_contact_form_sends_email_for_valid_data(self):
         form = ContactForm(data=self.form_data)
         self.assertTrue(form.is_valid())
+
+        with self.assertLogs("pages.forms", level="INFO") as cm:
+            form.send_mail()
+
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertEqual(mail.outbox[0].subject, self.form_data["subject"])
+        self.assertGreaterEqual(len(cm.output), 1)
+        self.assertEqual(cm.output, ["INFO:pages.forms:sending contact form email..."])
 
     def test_empty_contact_form_raises_valid_errors(self):
         form = ContactForm({})
@@ -53,7 +62,7 @@ class ContactFormTests(SimpleTestCase):
         }
 
         form = ContactForm(data=invalid_data)
-        
+
         self.assertEqual(
             form.errors["name"][0],
             "Ensure this value has at least 3 characters (it has 2).",
