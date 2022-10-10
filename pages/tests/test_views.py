@@ -109,7 +109,6 @@ class ContactPageTests(SimpleTestCase):
     def setUp(self):
         self.url = reverse("pages:contact")
         self.response = self.client.get(self.url)
-        self.field_required_msg = "This field is required."
 
     def test_contact_page_status_code(self):
         self.assertEqual(self.response.status_code, HTTPStatus.OK)
@@ -131,43 +130,21 @@ class ContactPageTests(SimpleTestCase):
         form = self.response.context["form"]
         self.assertIsInstance(form, ContactForm)
 
-    def test_contact_page_with_empty_form_submission_raises_valid_errors(self):
+    def test_contact_page_post_success_for_valid_data(self):
+        response = self.client.post(
+            self.url,
+            data={
+                "name": "Guest User",
+                "email": "guestuser@email.com",
+                "subject": "How have you been?",
+                "message": "Golu this project looks great. Awesome job!!! Keep up the good work 💪",
+            },
+        )
+
+        self.assertEqual(response.status_code, HTTPStatus.FOUND)
+        self.assertEqual(response["Location"], reverse("pages:home"))
+
+    def test_contact_page_post_error_for_invalid_data(self):
         response = self.client.post(self.url, data={})
-        self.assertFormError(response, "form", "name", self.field_required_msg)
-        self.assertFormError(response, "form", "email", self.field_required_msg)
-        self.assertFormError(response, "form", "subject", self.field_required_msg)
-        self.assertFormError(response, "form", "message", self.field_required_msg)
-
-    def test_contact_page_with_invalid_field_lengths_raises_valid_errors(self):
-        invalid_data = {
-            "name": "ab",
-            "email": "a@b.com",
-            "subject": "XX",
-            "message": "-",
-        }
-        response = self.client.post(self.url, invalid_data)
-
-        self.assertFormError(
-            response,
-            "form",
-            "name",
-            "Ensure this value has at least 3 characters (it has 2).",
-        )
-        self.assertFormError(
-            response,
-            "form",
-            "email",
-            "Ensure this value has at least 10 characters (it has 7).",
-        )
-        self.assertFormError(
-            response,
-            "form",
-            "subject",
-            "Ensure this value has at least 3 characters (it has 2).",
-        )
-        self.assertFormError(
-            response,
-            "form",
-            "message",
-            "Ensure this value has at least 20 characters (it has 1).",
-        )
+        self.assertEqual(response.status_code, HTTPStatus.OK)
+        self.assertContains(response, "This field is required.")

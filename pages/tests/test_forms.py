@@ -4,52 +4,69 @@ from pages.forms import ContactForm
 
 
 class ContactFormTests(SimpleTestCase):
-    def test_contact_form_is_valid_for_valid_data(self):
-        form_data = {
+    def setUp(self):
+        self.field_required_msg = "This field is required."
+        self.form_data = {
             "name": "Guest User",
             "email": "guestuser@email.com",
             "subject": "Just want to say hi!",
             "message": "Hey I have been thinking about you a lot! Would you like to hang around during the weekend?",
         }
-        form = ContactForm(data=form_data)
+
+    def test_contact_form_is_valid_for_valid_data(self):
+        form = ContactForm(data=self.form_data)
         self.assertTrue(form.is_valid())
 
+    def test_empty_contact_form_raises_valid_errors(self):
+        form = ContactForm({})
+        self.assertEqual(form.errors["name"][0], self.field_required_msg)
+        self.assertEqual(form.errors["email"][0], self.field_required_msg)
+        self.assertEqual(form.errors["subject"][0], self.field_required_msg)
+        self.assertEqual(form.errors["message"][0], self.field_required_msg)
+
     def test_contact_form_is_invalid_for_missing_email_field(self):
-        form_data = {
-            "name": "Guest User",
-            "email": "",
-            "subject": "Just want to say hi!",
-            "message": "Hey I have been thinking about you a lot! Would you like to hang around during the weekend?",
-        }
-        form = ContactForm(data=form_data)
+        self.form_data.pop("email")
+        form = ContactForm(self.form_data)
         self.assertFalse(form.is_valid())
 
     def test_contact_form_is_invalid_for_missing_name_field(self):
-        form_data = {
-            "name": "",
-            "email": "guestuser@email.com",
-            "subject": "Just want to say hi!",
-            "message": "Hey I have been thinking about you a lot! Would you like to hang around during the weekend?",
-        }
-        form = ContactForm(data=form_data)
+        self.form_data.pop("name")
+        form = ContactForm(self.form_data)
         self.assertFalse(form.is_valid())
 
     def test_contact_form_is_invalid_for_empty_subject(self):
-        form_data = {
-            "name": "Guest user",
-            "email": "guestuser@email.com",
-            "subject": "",
-            "message": "Hey I have been thinking about you a lot! Would you like to hang around during the weekend?",
-        }
-        form = ContactForm(data=form_data)
+        self.form_data.pop("subject")
+        form = ContactForm(self.form_data)
         self.assertFalse(form.is_valid())
 
     def test_contact_form_is_invalid_for_empty_message(self):
-        form_data = {
-            "name": "Guest user",
-            "email": "guestuser@email.com",
-            "subject": "Just want to say hi!",
-            "message": "",
-        }
-        form = ContactForm(data=form_data)
+        self.form_data.pop("message")
+        form = ContactForm(self.form_data)
         self.assertFalse(form.is_valid())
+
+    def test_contact_form_with_invalid_field_lengths_raises_valid_errors(self):
+        invalid_data = {
+            "name": "ab",
+            "email": "a@b.com",
+            "subject": "XX",
+            "message": "-",
+        }
+
+        form = ContactForm(data=invalid_data)
+        
+        self.assertEqual(
+            form.errors["name"][0],
+            "Ensure this value has at least 3 characters (it has 2).",
+        )
+        self.assertEqual(
+            form.errors["email"][0],
+            "Ensure this value has at least 10 characters (it has 7).",
+        )
+        self.assertEqual(
+            form.errors["subject"][0],
+            "Ensure this value has at least 3 characters (it has 2).",
+        )
+        self.assertEqual(
+            form.errors["message"][0],
+            "Ensure this value has at least 20 characters (it has 1).",
+        )
