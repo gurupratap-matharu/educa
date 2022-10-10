@@ -9,7 +9,7 @@ logger = logging.getLogger(__name__)
 
 class ContactForm(forms.Form):
     name = forms.CharField(max_length=100, min_length=3, required=True)
-    email = forms.EmailField(required=True)
+    email = forms.EmailField(required=True, min_length=10)
     subject = forms.CharField(max_length=100, min_length=3)
     message = forms.CharField(
         min_length=20,
