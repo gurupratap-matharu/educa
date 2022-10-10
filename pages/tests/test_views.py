@@ -1,5 +1,7 @@
+import pdb
 from http import HTTPStatus
 
+from django.contrib.messages import get_messages
 from django.core import mail
 from django.test import SimpleTestCase, tag
 from django.urls import resolve, reverse
@@ -115,6 +117,12 @@ class ContactPageTests(SimpleTestCase):
     def setUp(self):
         self.url = reverse("pages:contact")
         self.response = self.client.get(self.url)
+        self.valid_data = {
+            "name": "Guest User",
+            "email": "guestuser@email.com",
+            "subject": "How have you been?",
+            "message": "Golu this project looks great. Awesome job!!! Keep up the good work 💪",
+        }
 
     def test_contact_page_status_code(self):
         self.assertEqual(self.response.status_code, HTTPStatus.OK)
@@ -138,25 +146,30 @@ class ContactPageTests(SimpleTestCase):
 
     @tag("email")
     def test_contact_page_sends_email_for_valid_data(self):
-        response = self.client.post(
-            self.url,
-            data={
-                "name": "Guest User",
-                "email": "guestuser@email.com",
-                "subject": "How have you been?",
-                "message": "Golu this project looks great. Awesome job!!! Keep up the good work 💪",
-            },
-        )
+
+        response = self.client.post(self.url, data=self.valid_data)
 
         self.assertEqual(response.status_code, HTTPStatus.FOUND)
 
         # Test that an email has been sent.
-        self.assertEqual(len(mail.outbox), 1)
         # Verify that the subject of the first message is correct.
-        self.assertEqual(mail.outbox[0].subject, "How have you been?")
-
         # Check page redirected to home after success
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertEqual(mail.outbox[0].subject, self.valid_data.get("subject"))
         self.assertEqual(response["Location"], reverse("pages:home"))
+
+        # Check that a confirmation message is included in the response
+        messages = list(get_messages(response.wsgi_request))
+        self.assertEqual(len(messages), 1)
+        self.assertEqual(str(messages[0]), ContactPageView.success_message)
+
+    @tag("messages")
+    def test_contact_page_sends_valid_message_after_successul_post(self):
+        response = self.client.post(self.url, data=self.valid_data)
+
+        messages = list(get_messages(response.wsgi_request))
+        self.assertEqual(len(messages), 1)
+        self.assertEqual(str(messages[0]), ContactPageView.success_message)
 
     def test_contact_page_post_error_for_invalid_data(self):
         response = self.client.post(self.url, data={})
