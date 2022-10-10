@@ -21,13 +21,16 @@ class ContactForm(forms.Form):
     def send_mail(self):
 
         subject = self.cleaned_data["subject"]
+        from_email = self.cleaned_data["email"]
         message = "From: {name}\nEmail: {email}\n\n{message}".format(
             **self.cleaned_data
         )
+
+        logger.info("sending contact form email...")
         send_mail(
             subject=subject,
             message=message,
-            from_email=self.cleaned_data["email"],
+            from_email=from_email,
             recipient_list=[settings.DEFAULT_TO_EMAIL],
             fail_silently=False,
         )
