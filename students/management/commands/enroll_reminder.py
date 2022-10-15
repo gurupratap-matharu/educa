@@ -1,11 +1,13 @@
 import datetime
 
 from django.conf import settings
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from django.core.mail import send_mass_mail
 from django.core.management.base import BaseCommand
 from django.db.models import Count
 from django.utils import timezone
+
+User = get_user_model()
 
 
 class Command(BaseCommand):
