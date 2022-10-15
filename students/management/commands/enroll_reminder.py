@@ -42,4 +42,8 @@ class Command(BaseCommand):
             )
 
         send_mass_mail(emails)
-        self.stdout.write("Sent {} reminders".format(len(emails)))
+
+        num_emails = len(emails)
+        now = timezone.now().strftime("%m/%d/%Y, %H:%M:%S")
+
+        self.stdout.write(f"Sent {num_emails} reminders on {now}")
