@@ -117,7 +117,7 @@ EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = "admin@educahunt.xyz"
 DEFAULT_TO_EMAIL = "hi@educahunt.xyz"
 SERVER_EMAIL = "django@educahunt.xyz"
-RECIPIENT_LIST = ["gurupratap.matharu@gmail.com"]
+RECIPIENT_LIST = ["gurupratap.matharu@gmail.com", "veerplaying@gmail.com"]
 
 ADMINS = [
     ("EducaHunt Support", "support@educahunt.xyz"),
