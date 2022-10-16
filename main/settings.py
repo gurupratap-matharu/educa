@@ -105,7 +105,14 @@ ACCOUNT_SIGNUP_PASSWORD_ENTER_TWICE = False
 ACCOUNT_LOGIN_ATTEMPTS_LIMIT = 5
 ACCOUNT_LOGIN_ATTEMPTS_TIMEOUT = 86400
 
-EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+# EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = "smtp.mailgun.org"
+EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+
 
 DEFAULT_FROM_EMAIL = "admin@educahunt.xyz"
 DEFAULT_TO_EMAIL = "hi@educahunt.xyz"
@@ -289,6 +296,7 @@ if RUN_SECURELY:
     CSRF_COOKIE_SECURE = True
 
 if not DEBUG:
+
     # Sentry
     sentry_sdk.init(
         dsn=os.getenv("SENTRY_DSN"),
