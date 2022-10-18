@@ -101,6 +101,12 @@ class Content(models.Model):
     class Meta:
         ordering = ["order"]
 
+    def __str__(self):
+        return f"{self.item}"
+
+    def render(self):
+        return self.item.render()
+
 
 class ItemBase(models.Model):
     """
