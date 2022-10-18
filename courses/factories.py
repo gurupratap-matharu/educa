@@ -1,10 +1,9 @@
 import factory
 from django.contrib.auth import get_user_model
-from django.core.files.base import ContentFile
+from django.contrib.contenttypes.models import ContentType
 from faker import Faker
 
-from courses.models import Course, File, Image, Module, Subject, Text, Video
-from users.factories import StaffuserFactory, SuperuserFactory, UserFactory
+from courses.models import Content, Course, File, Image, Module, Subject, Text, Video
 
 User = get_user_model()
 fake = Faker()
@@ -69,7 +68,15 @@ class ModuleFactory(factory.django.DjangoModelFactory):
 
 
 class ContentFactory(factory.django.DjangoModelFactory):
-    pass
+    module = factory.SubFactory(ModuleFactory)
+    object_id = factory.SelfAttribute("item.id")
+    content_type = factory.LazyAttribute(
+        lambda o: ContentType.objects.get_for_model(o.item)
+    )
+
+    class Meta:
+        abstract = True
+        exclude = ["item"]
 
 
 class ItemBaseFactory(factory.django.DjangoModelFactory):
@@ -104,7 +111,35 @@ class ImageFactory(ItemBaseFactory):
 
 
 class FileFactory(ItemBaseFactory):
-    file = factory.django.FileField()
+    file = factory.django.FileField(filename="notes.pdf")
 
     class Meta:
         model = File
+
+
+class ImageContentFactory(ContentFactory):
+    item = factory.SubFactory(ImageFactory)
+
+    class Meta:
+        model = Content
+
+
+class VideoContentFactory(ContentFactory):
+    item = factory.SubFactory(VideoFactory)
+
+    class Meta:
+        model = Content
+
+
+class FileContentFactory(ContentFactory):
+    item = factory.SubFactory(FileFactory)
+
+    class Meta:
+        model = Content
+
+
+class TextContentFactory(ContentFactory):
+    item = factory.SubFactory(TextFactory)
+
+    class Meta:
+        model = Content
