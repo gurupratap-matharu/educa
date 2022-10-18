@@ -1,9 +1,12 @@
+from turtle import title
 from typing import Sequence
 
 from django.contrib import admin
 from embed_video.admin import AdminVideoMixin
 
 from .models import Content, Course, File, Image, Module, Subject, Text, Video
+
+admin.site.empty_value_display = "(None)"
 
 
 class ModuleInline(admin.StackedInline):
@@ -37,14 +40,37 @@ class ModuleAdmin(admin.ModelAdmin):
     inlines = [ContentInline]
 
 
+@admin.register(Content)
+class ContentAdmin(admin.ModelAdmin):
+    list_display = [
+        "__str__",
+        "order",
+        "flavour",
+        "module",
+    ]
+
+    list_filter = [
+        "content_type",
+    ]
+    list_display_links = ["__str__"]
+
+    @admin.display(description="Name")
+    def flavour(self, obj):
+        return ("%s" % obj.item._meta.model_name).title()
+
+
 @admin.register(Text)
 class TextAdmin(admin.ModelAdmin):
-    list_display: Sequence[str] = ("title", "render", "owner", "created")
+    list_display: Sequence[str] = ("title", "snippet", "owner", "created")
     list_filter: Sequence[str] = (
         "created",
         "updated",
     )
     search_fields: Sequence[str] = ["title"]
+
+    def snippet(self, obj):
+        data = obj.content
+        return (data[:75] + "...") if len(data) > 75 else data
 
 
 @admin.register(Video)
