@@ -2,28 +2,30 @@
 
 
 import random
+import time
 
 import factory
 from django.contrib.auth import get_user_model
 from django.core.management.base import BaseCommand
 
 from courses.factories import (
-    SUBJECTS,
     CourseFactory,
     FileContentFactory,
     ImageContentFactory,
     ModuleFactory,
-    SubjectFactory,
     TextContentFactory,
     VideoContentFactory,
 )
 from courses.models import Content, Course, File, Image, Module, Text, Video
+from users.factories import StaffuserFactory, UserFactory
+
+start = time.time()
 
 NUM_SUPERUSERS = 1
 NUM_STAFFUSERS = 5
 NUM_USERS = 50
 
-NUM_COURSES = 10
+NUM_COURSES = 100
 NUM_USERS_PER_COURSE = 8
 NUM_MODULES_PER_COURSE = 7
 NUM_CONTENT_PER_MODULE = 5
@@ -72,6 +74,11 @@ class Command(BaseCommand):
 
         self.success("Creating new data...")
 
+        self.success("Creating users...")
+
+        StaffuserFactory.create_batch(size=NUM_STAFFUSERS)
+        UserFactory.create_batch(size=NUM_USERS)
+
         users = User.objects.all()
         superuser = User.objects.get(email__icontains="gurupratap")
 
@@ -79,6 +86,8 @@ class Command(BaseCommand):
         students.append(superuser)
 
         with factory.Faker.override_default_locale(locale):
+
+            self.success("Creating courses, modules and contents...")
             courses = CourseFactory.create_batch(size=NUM_COURSES, students=students)
 
             for course in courses:
@@ -107,4 +116,5 @@ class Command(BaseCommand):
         """
         )
 
+        self.success("It took %d seconds." % (time.time() - start))
         self.success("All done! 💖💅🏻💫")
