@@ -1,28 +1,32 @@
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 
+from users.factories import SuperuserFactory, UserFactory
+
+CustomUser = get_user_model()
+
 
 class CustomUserTests(TestCase):
-    def test_create_user(self):
-        User = get_user_model()
-        user = User.objects.create_user(
-            username="veer", email="veer@email.com", password="testpass123"
-        )
+    def test_create_normal_user(self):
+        user = UserFactory()
+        user_from_db = CustomUser.objects.first()
 
-        self.assertEqual(user.username, "veer")
-        self.assertEqual(user.email, "veer@email.com")
+        self.assertEqual(CustomUser.objects.count(), 1)
+        self.assertEqual(user.username, user_from_db.username)
+        self.assertEqual(user.email, user_from_db.email)
+
         self.assertTrue(user.is_active)
         self.assertFalse(user.is_staff)
         self.assertFalse(user.is_superuser)
 
     def test_create_superuser(self):
-        User = get_user_model()
-        user = User.objects.create_superuser(
-            username="superadmin", email="superadmin@email.com", password="testpass123"
-        )
+        superuser = SuperuserFactory()
+        superuser_from_db = CustomUser.objects.first()
 
-        self.assertEqual(user.username, "superadmin")
-        self.assertEqual(user.email, "superadmin@email.com")
-        self.assertTrue(user.is_active)
-        self.assertTrue(user.is_staff)
-        self.assertTrue(user.is_superuser)
+        self.assertEqual(CustomUser.objects.count(), 1)
+        self.assertEqual(superuser.username, superuser_from_db.username)
+        self.assertEqual(superuser.email, superuser_from_db.email)
+
+        self.assertTrue(superuser.is_active)
+        self.assertTrue(superuser.is_staff)
+        self.assertTrue(superuser.is_superuser)
