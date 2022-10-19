@@ -283,6 +283,10 @@ REST_FRAMEWORK = {
 
 SHELL_PLUS_IMPORTS = [
     "from courses.api.serializers import CourseSerializer, SubjectSerializer",
+    "from courses.factories import SubjectFactory, CourseFactory, ModuleFactory",
+    "from courses.factories import TextContentFactory, ImageContentFactory",
+    "from courses.factories import VideoContentFactory, FileContentFactory",
+    "from users.factories import UserFactory, StaffuserFactory, SuperuserFactory",
     "from rest_framework.renderers import JSONRenderer",
     "from rest_framework.parsers import JSONParser",
 ]
