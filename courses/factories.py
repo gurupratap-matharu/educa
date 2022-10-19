@@ -67,18 +67,6 @@ class ModuleFactory(factory.django.DjangoModelFactory):
     description = factory.Faker("text", max_nb_chars=500)
 
 
-class ContentFactory(factory.django.DjangoModelFactory):
-    module = factory.SubFactory(ModuleFactory)
-    object_id = factory.SelfAttribute("item.id")
-    content_type = factory.LazyAttribute(
-        lambda o: ContentType.objects.get_for_model(o.item)
-    )
-
-    class Meta:
-        abstract = True
-        exclude = ["item"]
-
-
 class ItemBaseFactory(factory.django.DjangoModelFactory):
     owner = factory.Iterator(User.objects.filter(is_staff=True))
     title = factory.Faker("word")
@@ -115,6 +103,18 @@ class FileFactory(ItemBaseFactory):
 
     class Meta:
         model = File
+
+
+class ContentFactory(factory.django.DjangoModelFactory):
+    module = factory.SubFactory(ModuleFactory)
+    object_id = factory.SelfAttribute("item.id")
+    content_type = factory.LazyAttribute(
+        lambda o: ContentType.objects.get_for_model(o.item)
+    )
+
+    class Meta:
+        abstract = True
+        exclude = ["item"]
 
 
 class ImageContentFactory(ContentFactory):
