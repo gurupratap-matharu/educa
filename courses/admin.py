@@ -1,4 +1,3 @@
-from turtle import title
 from typing import Sequence
 
 from django.contrib import admin
@@ -9,7 +8,7 @@ from .models import Content, Course, File, Image, Module, Subject, Text, Video
 admin.site.empty_value_display = "(None)"
 
 
-class ModuleInline(admin.StackedInline):
+class ModuleInline(admin.TabularInline):
     model = Module
 
 
