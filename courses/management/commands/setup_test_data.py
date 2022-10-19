@@ -7,6 +7,7 @@ import time
 import factory
 from django.contrib.auth import get_user_model
 from django.core.management.base import BaseCommand
+from django.db import transaction
 
 from courses.factories import (
     CourseFactory,
@@ -62,6 +63,7 @@ class Command(BaseCommand):
     def danger(self, msg):
         self.stdout.write(self.style.HTTP_BAD_REQUEST(msg))
 
+    @transaction.atomic
     def handle(self, *args, **kwargs):
         locale = kwargs.get("locale")
 
