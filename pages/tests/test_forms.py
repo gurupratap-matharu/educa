@@ -36,21 +36,25 @@ class ContactFormTests(SimpleTestCase):
     def test_contact_form_is_invalid_for_missing_email_field(self):
         self.form_data.pop("email")
         form = ContactForm(self.form_data)
+
         self.assertFalse(form.is_valid())
 
     def test_contact_form_is_invalid_for_missing_name_field(self):
         self.form_data.pop("name")
         form = ContactForm(self.form_data)
+
         self.assertFalse(form.is_valid())
 
     def test_contact_form_is_invalid_for_empty_subject(self):
         self.form_data.pop("subject")
         form = ContactForm(self.form_data)
+
         self.assertFalse(form.is_valid())
 
     def test_contact_form_is_invalid_for_empty_message(self):
         self.form_data.pop("message")
         form = ContactForm(self.form_data)
+
         self.assertFalse(form.is_valid())
 
     def test_contact_form_with_invalid_field_lengths_raises_valid_errors(self):
