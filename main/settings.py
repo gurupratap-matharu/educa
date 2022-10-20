@@ -115,13 +115,14 @@ EMAIL_USE_TLS = True
 
 
 DEFAULT_FROM_EMAIL = "admin@educahunt.xyz"
-DEFAULT_TO_EMAIL = "hi@educahunt.xyz"
-SERVER_EMAIL = "django@educahunt.xyz"
+DEFAULT_TO_EMAIL = "gurupratap.matharu@gmail.com"
+SERVER_EMAIL = "no-reply@educahunt.xyz"
 RECIPIENT_LIST = ["gurupratap.matharu@gmail.com", "veerplaying@gmail.com"]
 
 ADMINS = [
     ("EducaHunt Support", "support@educahunt.xyz"),
     ("Veer", "veerplaying@gmail.com"),
+    ("Gurupratap", "gurupratap.matharu@gmail.com"),
 ]
 
 AUTH_USER_MODEL = "users.CustomUser"
