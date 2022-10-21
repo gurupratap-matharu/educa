@@ -4,6 +4,7 @@ from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from django.template.loader import render_to_string
+from django.urls import reverse
 from embed_video.fields import EmbedVideoField
 
 from .fields import OrderField
@@ -45,6 +46,9 @@ class Subject(models.Model):
     def __str__(self):
         return self.title
 
+    def get_absolute_url(self):
+        return f"/subjects/{self.slug.lower()}"
+
 
 class Course(models.Model):
     owner = models.ForeignKey(
@@ -68,6 +72,9 @@ class Course(models.Model):
 
     def __str__(self):
         return self.title
+
+    def get_absolute_url(self):
+        return reverse("courses:course_detail", kwargs={"slug": self.slug.lower()})
 
 
 class Module(models.Model):
