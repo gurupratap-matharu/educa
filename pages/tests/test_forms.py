@@ -14,6 +14,30 @@ class ContactFormTests(SimpleTestCase):
             "message": "Hey I have been thinking about you a lot! Would you like to hang around during the weekend?",
         }
 
+    def test_form_name_field_label(self):
+        form = ContactForm(data=self.form_data)
+        label = form.fields["name"].label
+
+        self.assertTrue(label is None or label == "name")
+
+    def test_form_name_email_label(self):
+        form = ContactForm(data=self.form_data)
+        label = form.fields["email"].label
+
+        self.assertTrue(label is None or label == "email")
+
+    def test_form_name_subject_label(self):
+        form = ContactForm(data=self.form_data)
+        label = form.fields["subject"].label
+
+        self.assertTrue(label is None or label == "subject")
+
+    def test_form_name_message_label(self):
+        form = ContactForm(data=self.form_data)
+        label = form.fields["message"].label
+
+        self.assertTrue(label is None or label == "message")
+
     def test_contact_form_sends_email_for_valid_data(self):
         form = ContactForm(data=self.form_data)
         self.assertTrue(form.is_valid())
