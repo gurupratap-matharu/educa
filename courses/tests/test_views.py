@@ -131,14 +131,16 @@ class CourseListSubjectViewTests(TestCase):
         Course.objects.all().delete()
 
         # Fetch course and subject that do not exist
-        response = self.client.get("/courses/subject/music/")
+        invalid_subject_url = "/courses/subject/music/"
+        response = self.client.get(invalid_subject_url)
 
         self.assertEqual(response.status_code, HTTPStatus.NOT_FOUND)
         self.assertTemplateNotUsed(response, self.template_name)
 
     def test_course_list_subject_view_shows_all_courses_for_a_subject(self):
-        self.assertEqual(len(self.response.context["subject"]), 1)
+        self.assertEqual(self.response.context["subject"], self.subject)
         self.assertEqual(len(self.response.context["subjects"]), 2)
+        # Deselected courses should not be part of context. So count is 3 and not 6
         self.assertEqual(len(self.response.context["courses"]), 3)
 
 
