@@ -75,7 +75,6 @@ class Command(BaseCommand):
             m.objects.all().delete()
 
         self.success("Creating new data...")
-
         self.success("Creating users...")
 
         StaffuserFactory.create_batch(size=NUM_STAFFUSERS)
@@ -108,13 +107,15 @@ class Command(BaseCommand):
         all_staff = User.objects.filter(is_staff=True).count()
         all_courses = Course.objects.count()
         all_modules = Module.objects.count()
+        all_contents = Content.objects.count()
 
         self.success(
             f"""
-        Users  : {all_users}
-        Staff  : {all_staff}
-        Courses: {all_courses}
-        Modules: {all_modules}
+        Users   : {all_users}
+        Staff   : {all_staff}
+        Courses : {all_courses}
+        Modules : {all_modules}
+        Contents: {all_contents}
         """
         )
 
