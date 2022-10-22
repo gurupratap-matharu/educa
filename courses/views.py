@@ -1,9 +1,9 @@
 import json
 import logging
+import pdb
 
 from django.apps import apps
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
-from django.core.cache import cache
 from django.db.models import Count
 from django.forms.models import modelform_factory
 from django.http import JsonResponse
@@ -58,30 +58,12 @@ class CourseListView(TemplateResponseMixin, View):
 
     def get(self, request, subject=None):
 
-        subjects = cache.get("all_subjects")
-
-        if not subjects:
-            subjects = Subject.objects.annotate(total_courses=Count("courses"))
-            cache.set("all_subjects", list(subjects))
-
-        all_courses = Course.objects.annotate(total_modules=Count("modules"))
+        courses = Course.objects.annotate(total_modules=Count("modules"))
+        subjects = Subject.objects.annotate(total_courses=Count("courses"))
 
         if subject:
             subject = get_object_or_404(Subject, slug=subject)
-
-            key = f"subject_{subject.id}_courses"
-            courses = cache.get(key)
-
-            if not courses:
-                courses = all_courses.filter(subject=subject)
-                cache.set(key, list(courses))
-
-        else:
-            courses = cache.get("all_courses")
-
-            if not courses:
-                courses = all_courses
-                cache.set("all_courses", list(courses))
+            courses = courses.filter(subject=subject)
 
         return self.render_to_response(
             {
