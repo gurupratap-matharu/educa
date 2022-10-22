@@ -1,11 +1,13 @@
+import pdb
 from http import HTTPStatus
 
-from django.test import TestCase
+from django.test import TestCase, tag
 from django.urls import resolve, reverse
 
 from courses.factories import CourseFactory, ModuleFactory, SubjectFactory
 from courses.models import Course, Subject
-from courses.views import CourseListView
+from courses.views import CourseDetailView, CourseListView
+from students.forms import CourseEnrollForm
 from users.factories import StaffuserFactory, UserFactory
 
 
@@ -63,6 +65,7 @@ class CourseListViewTests(TestCase):
         self.assertEqual(len(response.context["courses"]), 2)
 
 
+@tag("slow")
 class CourseListSubjectViewTests(TestCase):
     """
     Test suite for Course list filtered by a subject
@@ -152,5 +155,54 @@ class CourseListSubjectViewTests(TestCase):
             self.assertEqual(c.total_modules, 2)
 
 
+@tag("slow")
 class CourseDetailViewTests(TestCase):
-    pass
+    def setUp(self):
+        staff_user = StaffuserFactory()
+        self.course = CourseFactory(owner=staff_user)
+
+        self.template_name = "courses/course_detail.html"
+        self.url = reverse("courses:course_detail", args=[self.course.slug])
+        self.response = self.client.get(self.url)
+
+    def test_course_detail_view_url_accessible_by_name(self):
+        response = self.client.get(
+            reverse("courses:course_detail", args=[self.course.slug])
+        )
+
+        self.assertEqual(response.status_code, HTTPStatus.OK)
+
+    def test_course_detail_url_exists_at_desired_location(self):
+        response = self.client.get(f"/courses/{self.course.slug}/")
+
+        self.assertEqual(response.status_code, HTTPStatus.OK)
+
+    def test_course_detail_view_works_and_renders_correct_template(self):
+        course = self.response.context["course"]
+
+        self.assertEqual(self.response.status_code, HTTPStatus.OK)
+        self.assertTemplateUsed(self.response, self.template_name)
+        self.assertContains(self.response, course.title)
+        self.assertContains(self.response, course.subject)
+        self.assertNotContains(self.response, "Hi I should not be on this page")
+
+    def test_course_detail_view_inserts_enrollment_form_in_context(self):
+        form = self.response.context["enroll_form"]
+
+        self.assertIsInstance(form, CourseEnrollForm)
+
+    def test_course_detail_url_resolves_correct_view(self):
+        view = resolve(self.url)
+        self.assertEqual(view.func.__name__, CourseDetailView.as_view().__name__)
+
+    def test_anonymous_user_sees_message_to_register(self):
+        self.assertContains(self.response, "Register to enroll")
+
+    def test_authenticated_user_sees_an_enrollment_form(self):
+        user = UserFactory()
+        _ = self.client.login(email=user.email, password="testpass123")
+        response = self.client.get(self.url)
+        form = response.context["enroll_form"]
+
+        self.assertIsInstance(form, CourseEnrollForm)
+        self.assertNotContains(response, "Register to enroll")
