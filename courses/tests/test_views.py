@@ -1,10 +1,9 @@
-import pdb
 from http import HTTPStatus
 
 from django.test import TestCase
 from django.urls import resolve, reverse
 
-from courses.factories import CourseFactory, SubjectFactory
+from courses.factories import CourseFactory, ModuleFactory, SubjectFactory
 from courses.models import Course, Subject
 from courses.views import CourseListView
 from users.factories import StaffuserFactory, UserFactory
@@ -92,10 +91,11 @@ class CourseListSubjectViewTests(TestCase):
             owner=self.owner,
         )  # Not selected in our view
 
+        for course in self.courses:
+            ModuleFactory.create_batch(size=2, course=course)
+
         self.template_name = "courses/course_list.html"
-
         self.url = reverse("courses:course_list_subject", args=[self.subject.slug])
-
         self.response = self.client.get(self.url)
 
     def test_course_list_subject_url_accessible_by_name(self):
@@ -142,6 +142,14 @@ class CourseListSubjectViewTests(TestCase):
         self.assertEqual(len(self.response.context["subjects"]), 2)
         # Deselected courses should not be part of context. So count is 3 and not 6
         self.assertEqual(len(self.response.context["courses"]), 3)
+
+    def test_subject_and_course_have_annotated_attributes(self):
+        # Veer check if running for loop in a single test is correct or not!
+        for s in self.response.context["subjects"]:
+            self.assertEqual(s.total_courses, 3)
+
+        for c in self.response.context["courses"]:
+            self.assertEqual(c.total_modules, 2)
 
 
 class CourseDetailViewTests(TestCase):
