@@ -182,5 +182,4 @@ class FaviconTests(SimpleTestCase):
 
         self.assertEqual(response.status_code, HTTPStatus.OK)
         self.assertEqual(response["Cache-Control"], "max-age=86400, immutable, public")
-        self.assertEqual(response["Content-Type"], "image/x-icon")
         self.assertGreater(len(response.getvalue()), 0)
