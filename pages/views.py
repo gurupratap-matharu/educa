@@ -26,6 +26,10 @@ class PrivacyPageView(TemplateView):
     template_name: str = "pages/privacy.html"
 
 
+class BaseFullscreenPageView(TemplateView):
+    template_name: str = "pages/test-base-fullscreen.html"
+
+
 class ContactPageView(SuccessMessageMixin, FormView):
     template_name: str = "pages/contact.html"
     form_class = ContactForm
