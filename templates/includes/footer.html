@@ -1,0 +1,42 @@
+<footer>
+    <div class="footer-main-content">
+        <div class="footer-logo-container">
+            <h3>Educahunt</h3>
+            <p>Educahunt is the world's leading community
+                for students to share, grow and get hired.
+            </p>
+        </div>
+        <div class="links-container">
+            <div class="links-column">
+                <h4>For students</h4>
+                <a href="{% url 'students:student_registration' %}">Sign Up</a>
+                <a href="">Go Pro!</a>
+                <a href="{% url 'courses:course_list' %}">Explore courses</a>
+                <a href="">Learning Blog</a>
+                <a href="">Refer a Friend</a>
+                <a href="">Code of conduct</a>
+            </div>
+            <div class="links-column">
+                <h4>For instructors</h4>
+                <a href="{% url 'courses:course_create' %}">Create a course</a>
+                <a href="{% url 'courses:manage_course_list' %}">My courses</a>
+                <a href="">Give feedback</a>
+            </div>
+            <div class="links-column">
+                <h4>Company</h4>
+                <a href="{% url 'pages:about' %}">About</a>
+                <a href="">Careers</a>
+                <a href="">Support</a>
+                <a href="">Testimonials</a>
+                <a href="">API</a>
+                <a href="">Cookie policy</a>
+                <a href="{% url "pages:privacy" %}">Privacy policy</a>
+                <a href="{% url "pages:terms" %}">Terms of service</a>
+            </div>
+        </div>
+    </div>
+    <div class="footer-lower-content">
+        <div>© 2022 EducaHunt. All rights reserved.</div>
+        <div>??? courses created {logo}</div>
+    </div>
+</footer>
