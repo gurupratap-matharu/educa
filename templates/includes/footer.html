@@ -1,7 +1,42 @@
 <footer>
-    <a href="/" class="logo">Educa</a>
-    <ul class="menu">
-        <li><a href="{% url "pages:privacy" %}">Privacy Policy</a></li>
-        <li><a href="{% url "pages:terms" %}" class="button">Terms of Service</a></li>
-    </ul>
+    <div class="footer-main-content">
+        <div class="footer-logo-container">
+            <h3>Educahunt</h3>
+            <p>Educahunt is the world's leading community
+                for students to share, grow and get hired.
+            </p>
+        </div>
+        <div class="links-container">
+            <div class="links-column">
+                <h4>For students</h4>
+                <a href="">Sign Up</a>
+                <a href="">Go Pro!</a>
+                <a href="">Explore courses</a>
+                <a href="">Learning Blog</a>
+                <a href="">Refer a Friend</a>
+                <a href="">Code of conduct</a>
+            </div>
+            <div class="links-column">
+                <h4>For instructors</h4>
+                <a href="">Create a course</a>
+                <a href="">My courses</a>
+                <a href="">Give feedback</a>
+            </div>
+            <div class="links-column">
+                <h4>Company</h4>
+                <a href="">About</a>
+                <a href="">Careers</a>
+                <a href="">Support</a>
+                <a href="">Testimonials</a>
+                <a href="">API</a>
+                <a href="">Cookie policy</a>
+                <a href="{% url "pages:privacy" %}">Privacy policy</a>
+                <a href="{% url "pages:terms" %}">Terms of service</a>
+            </div>
+        </div>
+    </div>
+    <div class="footer-lower-content">
+        <div>© 2022 EducaHunt. All rights reserved.</div>
+        <div>??? courses created {logo}</div>
+    </div>
 </footer>
