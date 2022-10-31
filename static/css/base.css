@@ -5,6 +5,48 @@ body {
   font-family: "Roboto", sans-serif;
   font-weight: 400;
   color: #333;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+footer {
+  margin-top: auto;
+  display: flex;
+  flex-flow: column wrap;
+  background-color: #efefef;
+  padding-inline: 3rem;
+}
+
+.footer-main-content {
+  display: flex;
+  padding-bottom: 2rem;
+}
+
+.footer-logo-container {
+  flex: 1 1 0;
+}
+
+.links-container {
+  display: flex;
+  justify-content: space-around;
+  flex: 3 1 0;
+}
+
+.links-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.links-column > * {
+  padding-bottom: 0.5rem;
+}
+
+.footer-lower-content {
+  border-top: 1px solid grey;
+  display: flex;
+  justify-content: space-between;
+  padding: 3rem 0;
 }
 
 a {
