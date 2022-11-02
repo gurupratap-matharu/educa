@@ -26,5 +26,8 @@ jobs:
           script: |
             cd ${{ secrets.PROJECT_PATH }}
             echo "Veer I am here: "
-            pwd            
-            # git pull ${{secrets.REPO_URL}}
+            git pull origin master
+            python manage.py collectstatic --noinput
+            python manage.py showmigrations
+            python manage.py migrate
+            reload
