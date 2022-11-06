@@ -199,7 +199,7 @@ class CourseDetailViewTests(TestCase):
 
     def test_authenticated_user_sees_an_enrollment_form(self):
         user = UserFactory()
-        _ = self.client.login(email=user.email, password="testpass123")
+        _ = self.client.force_login(user)  # type: ignore
         response = self.client.get(self.url)
         form = response.context["enroll_form"]
 
