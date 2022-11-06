@@ -205,3 +205,33 @@ class CourseDetailViewTests(TestCase):
 
         self.assertIsInstance(form, CourseEnrollForm)
         self.assertNotContains(response, "Register to enroll")
+
+
+class ManageCourseListViewTests(TestCase):
+    """
+    Test suite for the ManageCourseListView and the manage_course_list endpoint.
+
+    This is kind of an internal view meant only for instructors / teachers. Being logged
+    in is obligatory and the view just lists the course that pertains to the owner i.e.
+    the instructor so that they can edit / delete or manage its modules and contents.
+
+    Or might as well create another course.
+
+    Of course super or staff users should be able to access this view.
+    """
+
+    def setUp(self):  # might change this to setUpTestData()
+        self.url = reverse("courses:manage_course_list")
+        self.template_name = "courses/course_manage_list.html"
+
+    def test_manage_course_list_url_is_accessible_by_name(self):
+        response = self.client.get(reverse("courses:manage_course_list"))
+        self.assertEqual(response.status_code, HTTPStatus.OK)
+
+    def test_manage_course_list_works(self):
+        response = self.client.get(self.url)
+
+        self.assertEqual(response.status_code, HTTPStatus.OK)
+        self.assertTemplateUsed(response, self.template_name)
+        self.assertContains(response, "My Courses")
+        self.assertNotContains(response, "Hi I should not be on this page!")

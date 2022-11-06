@@ -89,6 +89,13 @@ class CourseDetailView(DetailView):
 
 class ManageCourseListView(OwnerCourseMixin, ListView):
     """
+    This is kind of an internal view meant only for instructors / teachers. Being logged
+    in is obligatory and the view just lists the course that pertains to the owner i.e.
+    the instructor so that they can edit / delete or manage its modules and contents.
+
+    Or might as well create another course if they feel like.
+
+    Of course super or staff users should be able to access this view.
     Instructor facing course list view which allows instructors to manage their courses.
     """
 
