@@ -358,3 +358,43 @@ ul#course-modules li:hover {
   padding-left: 0;
   padding-right: 0;
 }
+
+/* The alert message box */
+.alert {
+  padding: 20px;
+}
+
+.alert-info {
+  background-color: #add8e6;
+  color: #3289a6;
+}
+
+.alert-success {
+  background-color: #90ee90;
+  color: #158c15;
+}
+
+.alert-warning {
+  background-color: #fdd283;
+  color: #b17403;
+}
+
+.alert-danger {
+  background-color: red;
+  color: white;
+}
+
+.closebtn {
+  cursor: pointer;
+  float: right;
+  font-size: 22px;
+  font-weight: bold;
+  line-height: 20px;
+  margin-left: 15px;
+  transition: 0.3s;
+}
+
+/* When moving the mouse over the close button */
+.closebtn:hover {
+  color: black;
+}

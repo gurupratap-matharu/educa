@@ -1,0 +1,19 @@
+p {
+  color: blueviolet;
+}
+
+.special {
+  color: cadetblue;
+}
+
+.outer {
+  border: 5px solid black;
+}
+
+.box {
+  margin: 30px;
+  width: 100px;
+  height: 100px;
+  background-color: rebeccapurple;
+  transform: rotate(0.2turn);
+}
