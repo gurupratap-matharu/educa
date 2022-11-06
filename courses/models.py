@@ -89,6 +89,9 @@ class Module(models.Model):
     class Meta:
         ordering = ["order"]
 
+    def get_absolute_url(self) -> str:
+        return reverse("courses:module_content_list", args=[self.id])  # type: ignore
+
 
 class Content(models.Model):
     module = models.ForeignKey(
@@ -109,8 +112,18 @@ class Content(models.Model):
     def __str__(self):
         return f"{self.item}"
 
+    def get_absolute_url(self) -> str:
+        return reverse(
+            "courses:module_content_update",
+            kwargs={
+                "module_id": self.module.id,  # type: ignore
+                "model_name": self.item._meta.model_name,  # type: ignore
+                "id": self.id,  # type: ignore
+            },
+        )
+
     def render(self):
-        return self.item.render()
+        return self.item.render()  # type: ignore
 
 
 class ItemBase(models.Model):
