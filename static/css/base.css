@@ -49,6 +49,10 @@ footer {
   padding: 3rem 0;
 }
 
+.social-login-box {
+  border-top: 1px solid #ae2c2c;
+}
+
 a {
   color: #3fad37;
   text-decoration: none;
@@ -397,4 +401,8 @@ ul#course-modules li:hover {
 /* When moving the mouse over the close button */
 .closebtn:hover {
   color: black;
+}
+
+.container {
+  margin: 2rem 0rem;
 }
