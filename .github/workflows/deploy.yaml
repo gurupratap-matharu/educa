@@ -30,6 +30,9 @@ jobs:
             echo "Veer: running git pull..."
             git pull origin master
 
+            echo "Veer: running poetry install..."
+            poetry install
+
             echo "Veer: collecting static..."
             /home/veer/.pyenv/versions/educa/bin/python manage.py collectstatic --noinput
 
