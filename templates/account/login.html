@@ -1,10 +1,14 @@
 {% extends "base.html" %}
+{% load socialaccount %}
 
 {% block title %}Login{% endblock %}
 
 {% block content %}
 <h1>Log-in</h1>
 <div class="module">
+    <div class="container">
+        <a href="{% provider_login_url 'google' %}" class="button">Login with Google</a>
+    </div>
 
     {% if form.errors %}
     <p>Your username and password didn't match. Please try again.</p>

@@ -17,6 +17,8 @@ from django.urls import reverse_lazy
 from dotenv import load_dotenv
 from sentry_sdk.integrations.django import DjangoIntegration
 
+from .username_blacklist import USERNAME_BLACKLIST
+
 load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -105,6 +107,21 @@ ACCOUNT_SESSION_REMEMBER = True
 ACCOUNT_SIGNUP_PASSWORD_ENTER_TWICE = False
 ACCOUNT_LOGIN_ATTEMPTS_LIMIT = 5
 ACCOUNT_LOGIN_ATTEMPTS_TIMEOUT = 86400
+ACCOUNT_LOGOUT_ON_PASSWORD_CHANGE = True
+ACCOUNT_PRESERVE_USERNAME_CASING = False
+ACCOUNT_USERNAME_BLACKLIST = USERNAME_BLACKLIST  # <- This is not working Veer
+
+SOCIALACCOUNT_PROVIDERS = {
+    "google": {
+        "SCOPE": [
+            "profile",
+            "email",
+        ],
+        "AUTH_PARAMS": {
+            "access_type": "online",
+        },
+    }
+}
 
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
