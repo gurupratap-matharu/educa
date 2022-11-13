@@ -12,6 +12,18 @@
   <link rel="icon" type="image/png" sizes="32x32" href="{% static 'icons/favicon-32x32.png' %}">
   <link rel="icon" type="image/png" sizes="16x16" href="{% static 'icons/favicon-16x16.png' %}">
   <link rel="manifest" href="{% static 'icons/site.webmanifest' %}">
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-V97FCKT8DH"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag('js', new Date());
+
+    gtag('config', 'G-V97FCKT8DH');
+  </script>
   <!-- Specific CSS goes HERE -->
   {% block stylesheets %}{% endblock stylesheets %}
 
@@ -29,10 +41,9 @@
   <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"
     integrity="sha256-lSjKY0/srUM9BE3dPm+c4fBo1dky2v27Gdjm2uoZaL0=" crossorigin="anonymous"></script>
   <script>
-        $(document).ready(function () {
-            {% block domready %}
-            {% endblock %}
-        });
+    $(document).ready(function () {
+      {% block domready %} {% endblock %}
+    });
   </script>
   {% block js %}{% endblock js %}
 

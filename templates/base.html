@@ -1,51 +1,69 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>
+            {% block title %}Educa{% endblock %}
+        </title>
+        <link rel="stylesheet" href="{% static 'css/base.css' %}">
+        <link rel="apple-touch-icon"
+              sizes="180x180"
+              href="{% static 'icons/apple-touch-icon.png' %}">
+        <link rel="icon"
+              type="image/png"
+              sizes="32x32"
+              href="{% static 'icons/favicon-32x32.png' %}">
+        <link rel="icon"
+              type="image/png"
+              sizes="16x16"
+              href="{% static 'icons/favicon-16x16.png' %}">
+        <link rel="manifest" href="{% static 'icons/site.webmanifest' %}">
+        <!-- Google tag (gtag.js) -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-V97FCKT8DH"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Educa{% endblock %}</title>
-    <link rel="stylesheet" href="{% static 'css/base.css' %}">
-    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'icons/apple-touch-icon.png' %}">
-    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'icons/favicon-32x32.png' %}">
-    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'icons/favicon-16x16.png' %}">
-    <link rel="manifest" href="{% static 'icons/site.webmanifest' %}">
-</head>
+            function gtag() {
+                dataLayer.push(arguments);
+            }
+            gtag('js', new Date());
 
-<body>
-    <div id="header">
-        <a href="/" class="logo">Educa</a>
-        <ul class="menu">
-            {% if request.user.is_authenticated %}
-            <li><a href="{% url "account_logout" %}">Logout</a></li>
-            {% else %}
-            <li>
-                <a href="{% url "account_login" %}" class="button">Login</a>
-                <a href="{% url "account_signup" %}" class="button">Signup</a>
-            </li>
-            {% endif %}
-        </ul>
-    </div>
-    {% include 'includes/alert.html' %}
-    <div id="content">
-        {% block content %}
-        {% endblock content %}
-    </div>
-    {% include 'includes/footer.html' %}
-    <script src="https://code.jquery.com/jquery-3.6.1.min.js"
-        integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
-    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"
-        integrity="sha256-lSjKY0/srUM9BE3dPm+c4fBo1dky2v27Gdjm2uoZaL0=" crossorigin="anonymous"></script>
-    
-    <script>
-        $(document).ready(function () {
-            {% block domready %} 
-            {% endblock %}
-        });
-    </script>
-    {% block js %}{% endblock js %}
-</body>
-
+            gtag('config', 'G-V97FCKT8DH');
+        </script>
+    </head>
+    <body>
+        <div id="header">
+            <a href="/" class="logo">Educa</a>
+            <ul class="menu">
+                {% if request.user.is_authenticated %}
+                    <li>
+                        <a href="{% url "account_logout" %}">Logout</a>
+                    </li>
+                {% else %}
+                    <li>
+                        <a href="{% url "account_login" %}" class="button">Login</a>
+                        <a href="{% url "account_signup" %}" class="button">Signup</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+        {% include 'includes/alert.html' %}
+        <div id="content">
+            {% block content %}
+            {% endblock content %}
+        </div>
+        {% include 'includes/footer.html' %}
+        <script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+        <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js" integrity="sha256-lSjKY0/srUM9BE3dPm+c4fBo1dky2v27Gdjm2uoZaL0=" crossorigin="anonymous"></script>
+        <script>
+            $(document).ready(function() {
+                {% block domready %} {% endblock %}
+            });
+        </script>
+        {% block js %}
+        {% endblock js %}
+    </body>
 </html>
