@@ -51,6 +51,9 @@ jobs:
             echo "Veer: restarting gunicorn..."
             sudo systemctl restart gunicorn.service
 
+            echo "Veer: restarting daphne..."
+            sudo systemctl restart daphne.service
+
             echo "Veer: reloading nginx..."
             sudo nginx -s reload
 
