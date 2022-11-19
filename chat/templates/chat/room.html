@@ -1,23 +1,18 @@
 {% extends "base.html" %}
 {% load static %}
-
-
-{% block title %}Chat room for "{{ course.title }}"{% endblock title %}
-
+{% block title %}
+    Chat room for "{{ course.title }}"
+{% endblock title %}
 {% block content %}
-
-
-<div id="chat"></div>
-
-<div id="chat-input">
-    <input type="text" id="chat-message-input">
-    <input type="submit" id="chat-message-submit" value="Send">
-</div>
-
-{{ course.id|json_script:"course-id" }}
-
+    <div class="module">
+        <div id="chat"></div>
+        <div id="chat-input">
+            <input type="text" id="chat-message-input">
+            <input type="submit" id="chat-message-submit" value="Send">
+        </div>
+    </div>
+    {{ course.id|json_script:"course-id" }}
 {% endblock content %}
-
 {% block js %}
-<script type="text/javascript" src="{% static 'chat/js/chat_socket.js' %}"></script>
+    <script type="text/javascript" src="{% static 'chat/js/chat_socket.js' %}"></script>
 {% endblock js %}
