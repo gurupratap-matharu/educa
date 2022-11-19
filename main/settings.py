@@ -34,13 +34,6 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = int(os.getenv("DEBUG", default=0))
 
-
-ADMINS = (
-    os.getenv("ADMIN_NAME", "Site Administrator"),
-    os.getenv("ADMIN_EMAIL", "admin@mydomain.com"),
-)
-
-
 # 'DJANGO_ALLOWED_HOSTS' should be a single string of hosts with a space between each.
 # For example: 'DJANGO_ALLOWED_HOSTS=localhost 127.0.0.1 [::1]'
 ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", default="").split(" ")
@@ -55,11 +48,13 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django.contrib.sites",
+    "django.contrib.sitemaps",
     # third party
     "allauth",
     "allauth.account",
     "allauth.socialaccount",
     "allauth.socialaccount.providers.google",
+    "allauth.socialaccount.providers.facebook",
     "channels",
     "django_extensions",
     "embed_video",
@@ -85,6 +80,9 @@ MIDDLEWARE = [
 
 SITE_ID = 1
 
+ROOT_URLCONF = "main.urls"
+
+AUTH_USER_MODEL = "users.CustomUser"
 
 AUTHENTICATION_BACKENDS = (
     # Needed to login by username in Django admin, regardless of `allauth`
@@ -98,18 +96,18 @@ LOGIN_REDIRECT_URL = reverse_lazy("students:student_course_list")
 
 # Django allauth
 ACCOUNT_AUTHENTICATION_METHOD = "email"
-ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_EMAIL_VERIFICATION = "mandatory"
-ACCOUNT_UNIQUE_EMAIL = True
-ACCOUNT_LOGOUT_REDIRECT = reverse_lazy("pages:home")
 ACCOUNT_SESSION_REMEMBER = True
 ACCOUNT_SIGNUP_PASSWORD_ENTER_TWICE = False
 ACCOUNT_LOGIN_ATTEMPTS_LIMIT = 5
 ACCOUNT_LOGIN_ATTEMPTS_TIMEOUT = 86400
 ACCOUNT_LOGOUT_ON_PASSWORD_CHANGE = True
+ACCOUNT_LOGOUT_REDIRECT = reverse_lazy("pages:home")
 ACCOUNT_PRESERVE_USERNAME_CASING = False
+ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_USERNAME_BLACKLIST = USERNAME_BLACKLIST  # <- This is not working Veer
+ACCOUNT_USERNAME_REQUIRED = False
 
 SOCIALACCOUNT_PROVIDERS = {
     "google": {
@@ -125,20 +123,15 @@ SOCIALACCOUNT_PROVIDERS = {
 
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
-DEFAULT_FROM_EMAIL = "admin@educahunt.xyz"
+DEFAULT_FROM_EMAIL = "noreply@educahunt.xyz"
 DEFAULT_TO_EMAIL = "gurupratap.matharu@gmail.com"
-SERVER_EMAIL = "no-reply@educahunt.xyz"
+SERVER_EMAIL = "django@educahunt.xyz"
 RECIPIENT_LIST = ["gurupratap.matharu@gmail.com", "veerplaying@gmail.com"]
 
 ADMINS = [
-    ("EducaHunt Support", "support@educahunt.xyz"),
     ("Veer", "veerplaying@gmail.com"),
     ("Gurupratap", "gurupratap.matharu@gmail.com"),
 ]
-
-AUTH_USER_MODEL = "users.CustomUser"
-
-ROOT_URLCONF = "main.urls"
 
 TEMPLATES = [
     {
@@ -315,13 +308,6 @@ SHELL_PLUS_IMPORTS = [
     "from rest_framework.parsers import JSONParser",
 ]
 
-
-RUN_SECURELY = int(os.getenv("SECURE", default=0))
-
-if RUN_SECURELY:
-    # TODO currently enabling this flag is not working locally
-    SECURE_SSL_REDIRECT = True
-    CSRF_COOKIE_SECURE = True
 
 if not DEBUG:
     EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
