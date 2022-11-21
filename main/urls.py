@@ -27,7 +27,7 @@ urlpatterns = [
     # path("accounts/logout/", auth_views.LogoutView.as_view(), name="logout"),
     path("accounts/", include("allauth.urls")),
     # Local apps
-    path("accounts/", include("users.urls"), name="users"),
+    path("users/", include("users.urls"), name="users"),
     path("courses/", include("courses.urls"), name="courses"),
     path("students/", include("students.urls"), name="students"),
     path("chat/", include("chat.urls", namespace="chat")),
