@@ -23,3 +23,11 @@ Our API needs to provide the following functionality:
     - Retrieve available courses
     - Retrieve course contents
     - Enroll on a course
+
+Veer ask yourself these questions...
+
+    - Which endpoints will require authorization?
+    - Which resources will you want to be able to update?
+    - Will you need to be able to edit resources after they are created?
+    - Should resources be deletable?
+    - Do you need all the CRUD operations for each resource? Or just one or two?
