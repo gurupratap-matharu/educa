@@ -1,1 +1,31 @@
-<h1>Profile</h1>
+{% extends "base.html" %}
+
+{% block title %}
+    General
+{% endblock title %}
+
+{% block content %}
+<h1>
+    General
+</h1>
+<div class="contents">
+    <ul id="modules">
+        <li>General</li>
+        <li>Edit Profile</li>
+        <li>Password</li>
+        <li>Social Profiles</li>
+        <li>Sessions</li>
+        <li>Data Export</li>
+        <hr />
+        <li>Delete Account</li>
+    </ul>
+</div>
+<div class="module">
+    <label for="user_name">Username</label>
+    <input type="text" name="username" id="user_name" value={{ request.user }} readonly/>
+    <p>Your Educa URL: https://educahunt.xyz/<b>{{ request.user }}</b></p>
+    
+    <label for="user_email">Email</label>
+    <input type="email" name="email" id="user_email" value={{ request.user.email }} readonly/>
+</div>
+{% endblock content %}
