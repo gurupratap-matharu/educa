@@ -70,21 +70,13 @@ jobs:
           poetry-version: ${{ matrix.poetry-version }}
 
       - name: Install the dependencies
-        run: |
-        echo "Installing dependencies with poetry..."
-        poetry install
+        run: poetry install
 
       - name: Run black
-        run: |
-        echo "Checking formatting with black..."
-        poetry run black . --check
+        run: poetry run black . --check
 
       - name: Run isort
-        run: |
-        echo "Checking imports with isort..."
-        poetry run isort . --check-only --profile black
+        run: poetry run isort . --check-only --profile black
 
       - name: Run flake8
-        run: |
-        echo "Checking linting with flake8..."
-        poetry run flake8 .
+        run: poetry run flake8 .
