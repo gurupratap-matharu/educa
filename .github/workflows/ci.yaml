@@ -6,57 +6,85 @@ on:
   pull_request:
     branches:
       - master
+  # Trigger everyday at 1 UTC
+  schedule:
+    - cron: "0 1 * * *"
   workflow_dispatch:
+
+# Cancel any running workflow if the CI gets triggered again.
+concurrency:
+  group: ${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
 
 jobs:
   test:
+    runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
-        python-version: ["3.9"]
+        os: [ubuntu-latest, macos-latest]
+        python-version: ["3.8", "3.9", "3.10"]
         poetry-version: ["1.2.2"]
-        os: [ubuntu-latest]
-    runs-on: ${{ matrix.os }}
+
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v3
         with:
           python-version: ${{ matrix.python-version }}
-      - name: run image
+
+      - name: Run image
         uses: abatilo/actions-poetry@v2.1.4
         with:
           poetry-version: ${{ matrix.poetry-version }}
+
       - name: View poetry --help
         run: poetry --help
-      - name: install dependencies
+
+      - name: Install the dependencies
         run: poetry install
-      - name: run tests
+
+      - name: Run tests
         run: poetry run pytest --cov=./ --cov-report=xml
-      - name: upload coverage to codecov
+
+      - name: Upload coverage to codecov
         uses: codecov/codecov-action@v2
 
   code-quality:
+    runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
-        python-version: ["3.9"]
-        poetry-version: ["1.2.1"]
-        os: [ubuntu-latest]
-    runs-on: ${{ matrix.os }}
+        os: [ubuntu-latest, macos-latest]
+        python-version: ["3.8", "3.9", "3.10"]
+        poetry-version: ["1.2.2"]
+
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v3
         with:
           python-version: ${{ matrix.python-version }}
-      - name: run image
+
+      - name: Run image
         uses: abatilo/actions-poetry@v2.1.4
         with:
           poetry-version: ${{ matrix.poetry-version }}
-      - name: install dependencies
-        run: poetry install
-      - name: run black
-        run: poetry run black . --check
-      - name: run isort
-        run: poetry run isort . --check-only --profile black
-      - name: run flake8
-        run: poetry run flake8 .
+
+      - name: Install the dependencies
+        run: |
+        echo "Installing dependencies with poetry..."
+        poetry install
+
+      - name: Run black
+        run: |
+        echo "Checking formatting with black..."
+        poetry run black . --check
+
+      - name: Run isort
+        run: |
+        echo "Checking imports with isort..."
+        poetry run isort . --check-only --profile black
+
+      - name: Run flake8
+        run: |
+        echo "Checking linting with flake8..."
+        poetry run flake8 .
