@@ -2,6 +2,8 @@
 
 An online e-learning platform
 
+[![codecov](https://codecov.io/gh/gurupratap-matharu/educa/branch/master/graph/badge.svg?token=0O3sm8E5OU)](https://codecov.io/gh/gurupratap-matharu/educa)
+
 ## Demo
 
 https://wwww.educahunt.xyz
