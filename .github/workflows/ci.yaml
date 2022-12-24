@@ -1,4 +1,5 @@
-name: CI
+name: Tests
+
 on:
   push:
     branches:
@@ -6,9 +7,6 @@ on:
   pull_request:
     branches:
       - master
-  # Trigger everyday at 1 UTC
-  schedule:
-    - cron: "0 1 * * *"
   workflow_dispatch:
 
 # Cancel any running workflow if the CI gets triggered again.
@@ -18,65 +16,60 @@ concurrency:
 
 jobs:
   test:
+    name: Tests
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
         os: [ubuntu-latest]
-        python-version: ["3.8", "3.9", "3.10"]
+        python-version: ["3.9", "3.10"]
         poetry-version: ["1.2.2"]
+        database: [postgres]
 
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-python@v3
+      - name: Checkout git repo
+        uses: actions/checkout@v3
+
+      - name: Add environment variables to .env
+        run: |
+          echo DEBUG=1 >> .env
+          echo DJANGO_ALLOWED_HOSTS=* >> .env
+          echo DATABASE_NAME=educa >> .env
+          echo DATABASE_USER=postgres >> .env
+          echo DATABASE_PASSWORD=postgres >> .env
+          echo DATABASE_HOST=localhost >> .env
+          echo SECRET_KEY=sEcReTKeYtORuNTeSts >> .env
+
+      - name: Setup postgres database
+        uses: harmon758/postgresql-action@v1
+        if: matrix.database == 'postgres'
+        with:
+          postgresql version: "14.6"
+          postgresql db: "educa"
+          postgresql user: "postgres"
+          postgresql password: "postgres"
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
 
-      - name: Run image
-        uses: abatilo/actions-poetry@v2.1.4
+      - name: Install Poetry ${{ matrix.poetry-version }}
+        uses: abatilo/actions-poetry@v2.1.6
         with:
           poetry-version: ${{ matrix.poetry-version }}
 
-      - name: View poetry --help
-        run: poetry --help
-
       - name: Install the dependencies
         run: poetry install
+
+      - name: Run checks
+        run: poetry run python manage.py check
 
       - name: Run tests
-        run: poetry run pytest --cov=./ --cov-report=xml
+        run: poetry run coverage run --source='.' manage.py test -v 2
+
+      - name: Generate xml report
+        run: poetry run coverage xml
 
       - name: Upload coverage to codecov
-        uses: codecov/codecov-action@v2
-
-  code-quality:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ubuntu-latest]
-        python-version: ["3.8", "3.9", "3.10"]
-        poetry-version: ["1.2.2"]
-
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-python@v3
-        with:
-          python-version: ${{ matrix.python-version }}
-
-      - name: Run image
-        uses: abatilo/actions-poetry@v2.1.4
-        with:
-          poetry-version: ${{ matrix.poetry-version }}
-
-      - name: Install the dependencies
-        run: poetry install
-
-      - name: Run black
-        run: poetry run black . --check
-
-      - name: Run isort
-        run: poetry run isort . --check-only --profile black
-
-      - name: Run flake8
-        run: poetry run flake8 .
+        uses: codecov/codecov-action@v3

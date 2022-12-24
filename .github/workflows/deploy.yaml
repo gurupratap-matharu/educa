@@ -3,17 +3,22 @@ on:
   push:
     branches:
       - master
+  pull_request:
+    branches:
+      - master
   workflow_dispatch:
 
 jobs:
   deploy:
+    name: Deploy
+    runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
-        python-version: ["3.9"]
+        python-version: ["3.10"]
         poetry-version: ["1.2.2"]
         os: [ubuntu-latest]
-    runs-on: ${{ matrix.os }}
+
     steps:
       - name: Deploy to server
         # don't run locally
@@ -32,6 +37,10 @@ jobs:
 
             echo "Veer: running poetry install..."
             /home/veer/.local/bin/poetry install
+
+            # Veer try to refactor all these commands like
+            # poetry run python ...
+            # This way you don't have to specify the absolute path to python
 
             echo "Veer: collecting static..."
             /home/veer/.pyenv/versions/educa/bin/python manage.py collectstatic --noinput
