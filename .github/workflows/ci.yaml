@@ -73,3 +73,9 @@ jobs:
 
       - name: Upload coverage to codecov
         uses: codecov/codecov-action@v3
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./coverage.xml
+          flags: unittests
+          name: Educa coverage
+          verbose: true
