@@ -4,9 +4,6 @@ An online e-learning platform
 
 [![codecov](https://codecov.io/gh/gurupratap-matharu/educa/branch/master/graph/badge.svg?token=0O3sm8E5OU)](https://codecov.io/gh/gurupratap-matharu/educa)
 
-## Demo
-
-https://wwww.educahunt.xyz
 
 ## Documentation
 
@@ -56,25 +53,3 @@ Start the server
 ```bash
   python manage.py runserver
 ```
-
-## Roadmap
-
-- Additional browser support
-- Add unit tests for newer apps
-- Add docker configuration
-- Improve UI interface
-- Add newsletter support
-- Send emails automatically with management commands
-- Configure continous deployment
-- Add social auth
-- Backup database regularly
-- Add s3 support
-
-## Lessons Learned
-
-- How to be consistent in coding
-- How to think first, draw ideas on paper then code
-- How to learn by doing and building rather than tutorials
-- How to believe in myself even if the odds are not in my favour
-- How to measure progress instead of success
-- Understand that coding is very powerful and can set me up financially free
